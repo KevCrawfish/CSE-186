@@ -3,3 +3,14 @@
 
   CSS for Basic Requirement 
 */
+
+div.l1, div.l2, div.l3, div.l4, div.l5, div.l6{
+  font-family: 'Lucida Console';
+  text-align: center;
+  font-size: 40pt;
+  height: 60px;
+  width: 60px;
+  background-color: yellow;
+  color: black;
+  margin: auto;
+}

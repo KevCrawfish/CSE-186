@@ -3,3 +3,38 @@
 
   CSS for Advanced Requirement 
 */
+
+div.l1, div.l2, div.l3{
+  font-family: 'Lucida Console';
+  font-size: 60pt;
+  height: 100px;
+  width: 180px;
+  text-align: center;
+  float: left;
+  background-color: navy;
+  color: white;
+}
+
+div.l1:hover, div.l2:hover, div.l3:hover{
+  font-family: 'Lucida Console';
+  font-size: 60pt;
+  height: 100px;
+  width: 180px;
+  text-align: center;
+  float: left;
+  background-color: white;
+  color: navy;
+}
+
+div.l4, div.l5, div.l6{
+  font-family: 'Lucida Console';
+  font-size: 40pt;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  background-color: black;
+  color: yellow;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
