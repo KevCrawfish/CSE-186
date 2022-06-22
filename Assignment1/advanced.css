@@ -7,8 +7,8 @@
 div.l1, div.l2, div.l3{
   font-family: 'Lucida Console';
   font-size: 60pt;
-  height: 100px;
-  width: 180px;
+  height: 180px;
+  width: 100px;
   text-align: center;
   float: left;
   background-color: navy;
@@ -16,14 +16,15 @@ div.l1, div.l2, div.l3{
 }
 
 div.l1:hover, div.l2:hover, div.l3:hover{
-  font-family: 'Lucida Console';
-  font-size: 60pt;
-  height: 100px;
-  width: 180px;
-  text-align: center;
-  float: left;
   background-color: white;
   color: navy;
+}
+
+div.num{
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  border: 5px solid yellow;
 }
 
 div.l4, div.l5, div.l6{
@@ -34,7 +35,10 @@ div.l4, div.l5, div.l6{
   text-align: center;
   background-color: black;
   color: yellow;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  float: left;
+}
+
+div.l4:hover, div.l5:hover, div.l6:hover{
+  background-color: yellow;
+  color: black;
 }
