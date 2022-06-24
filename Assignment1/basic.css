@@ -5,9 +5,11 @@
 */
 
 div.l1, div.l2, div.l3, div.l4, div.l5, div.l6{
-  font-family: 'Lucida Console';
-  text-align: center;
-  font-size: 40pt;
+  font-family: 'Lucida Console', 'Courier', 'Monospace';
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 60px;
   width: 60px;
   background-color: yellow;

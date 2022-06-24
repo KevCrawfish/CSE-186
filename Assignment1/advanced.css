@@ -5,11 +5,10 @@
 */
 
 div.l1, div.l2, div.l3{
-  font-family: 'Lucida Console';
-  font-size: 60pt;
+  font-family: 'Lucida Console', 'Courier', 'Monospace';
+  font-size: 60px;
   height: 180px;
   width: 100px;
-  text-align: center;
   float: left;
   background-color: navy;
   color: white;
@@ -24,15 +23,17 @@ div.num{
   position: fixed;
   bottom: 0px;
   right: 0px;
-  border: 5px solid yellow;
+  border: 10px solid yellow;
 }
 
 div.l4, div.l5, div.l6{
-  font-family: 'Lucida Console';
-  font-size: 40pt;
+  font-family: 'Lucida Console', 'Courier', 'Monospace';
+  font-size: 40px;
   height: 60px;
   width: 60px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: black;
   color: yellow;
   float: left;
