@@ -6,7 +6,7 @@
 class Templater {
   /**
    * Create a templater
-   * @param {string} template - A {{ }} tagged string
+   * @param {string} template - A {{ }} tag string
    */
   constructor(template) {
     if (template === undefined) {
@@ -30,22 +30,25 @@ class Templater {
     }
 
     const re = /\{\{[A-Za-z]+\}\}/g;
-    const tagged = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
+    const tag = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
     const rep = this.str.match(re);
-    
+
     for (const i in rep) {
-      let regex = new RegExp(rep[i], 'g');
-      let flag = false;
-      for (const prop in map) {
-        if (rep[i].match(tagged) == prop) {
-          this.str = this.str.replace(regex, map[prop]);
-          flag = true;
+      if (map.hasOwnProperty.call(rep, i)) {
+        const regex = new RegExp(rep[i], 'g');
+        let flag = false;
+        for (const prop in map) {
+          if (rep[i].match(tag) == prop) {
+            this.str = this.str.replace(regex, map[prop]);
+            flag = true;
+          }
         }
-      }
-      if (strict && flag === false) {
-        throw new Error();
-      } else {
-        this.str = this.str.replace(regex, '');
+        if (strict && flag === false) {
+          throw new Error();
+        } else {
+          const reg = new RegExp(rep[i] + /\s/, 'g');
+          this.str = this.str.replace(reg, '');
+        }
       }
     }
 

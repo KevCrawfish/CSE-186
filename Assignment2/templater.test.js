@@ -28,8 +28,8 @@ test('Missing Tag', () => {
 
 /** */
 test('Scrambled Tag', () => {
-  const t = new Templater('{{Elizabeth}} {{owned}} a {{tiny}} {{sheep}}');
-  expect(t.apply({tiny: 'little', sheep: 'lamb', Elizabeth: 'Mary', owned: 'had'}))
+  const t = new Templater('{{Elizabeth}} had a {{tiny}} {{sheep}}');
+  expect(t.apply({tiny: 'little', sheep: 'lamb', Elizabeth: 'Mary'}))
       .toBe('Mary had a little lamb');
 });
 
