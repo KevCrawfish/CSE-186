@@ -1,5 +1,7 @@
 /**
  * CSE186 Assignment 2
+ * Kevin Crawford
+ * Resources used: https://developer.mozilla.org/en-US/docs/Web
  */
 class Templater {
   /**
@@ -7,6 +9,10 @@ class Templater {
    * @param {string} template - A {{ }} tagged string
    */
   constructor(template) {
+    if (template === undefined){
+      return;
+    }
+    this.str = template.split(' ');
   }
 
   /**
@@ -19,7 +25,27 @@ class Templater {
    *     found in map
    */
   apply(map, strict) {
-    return 'Not Implemented';
+    if (this.str === undefined) {
+      return this.str;
+    }
+
+    const re = /\{\{[a-zA-Z]+\}\}/;
+    const re_nb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/;
+
+    let exp = this.str.map(str => {
+      if (str.match(re_nb) !== null) {
+        for (const prop in map) {
+          if (prop == str.match(re_nb)){
+            return map[prop];
+          }
+        }
+      } else {
+        return str;
+      }
+    });
+
+    exp = exp.filter(str => str !== undefined);
+    return exp.join(' ');
   }
 }
 
