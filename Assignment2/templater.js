@@ -9,7 +9,7 @@ class Templater {
    * @param {string} template - A {{ }} tagged string
    */
   constructor(template) {
-    if (template === undefined){
+    if (template === undefined) {
       return;
     }
     this.str = template.split(' ');
@@ -29,22 +29,34 @@ class Templater {
       return this.str;
     }
 
-    const re = /\{\{[a-zA-Z]+\}\}/;
-    const re_nb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/;
+    // const re = /\{\{[a-zA-Z]+\}\}/;
+    const reNb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/g;
 
-    let exp = this.str.map(str => {
-      if (str.match(re_nb) !== null) {
+    let exp = this.str.map((str, index) => {
+      if (str.match(reNb) !== null) {
+        let rep = str.match(reNb);
+        let arr = [];
         for (const prop in map) {
-          if (prop == str.match(re_nb)){
-            return map[prop];
+          for (let i in rep) {
+            if (prop == rep[i]) {
+              arr = arr.concat(map[prop]);
+            }
           }
         }
+        if ((strict) && (arr.length === 0)) {
+          throw 'Error';
+        } else {
+          return arr.join('');
+        }
       } else {
+        if (str.includes('{') || str.includes('}')) {
+          return '';
+        }
         return str;
       }
     });
 
-    exp = exp.filter(str => str !== undefined);
+    exp = exp.filter((str) => str);
     return exp.join(' ');
   }
 }
