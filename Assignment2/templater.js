@@ -30,25 +30,26 @@ class Templater {
     }
 
     const re = /\{\{[A-Za-z]+\}\}/g;
-    const reg = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
+    const tagged = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
     const rep = this.str.match(re);
-    let flag = false;
     
     for (const i in rep) {
       let regex = new RegExp(rep[i], 'g');
+      let flag = false;
       for (const prop in map) {
-        if (rep[i].match(reg) == prop) {
+        if (rep[i].match(tagged) == prop) {
           this.str = this.str.replace(regex, map[prop]);
+          flag = true;
         }
       }
-      if (strict) {
+      if (strict && flag === false) {
         throw new Error();
       } else {
         this.str = this.str.replace(regex, '');
       }
     }
 
-    this.str = this.str.replace(/\{\{ *[A-Za-z]+ *\}\}/, '');
+    this.str = this.str.replace(/\{\{ *[A-Za-z]+ *\}\}\s/, '');
 
     return this.str;
   }
