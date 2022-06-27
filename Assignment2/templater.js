@@ -33,22 +33,20 @@ class Templater {
     const tag = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
     const rep = this.str.match(re);
 
-    for (const i in rep) {
-      if (map.hasOwnProperty.call(rep, i)) {
-        const regex = new RegExp(rep[i], 'g');
-        let flag = false;
-        for (const prop in map) {
-          if (rep[i].match(tag) == prop) {
-            this.str = this.str.replace(regex, map[prop]);
-            flag = true;
-          }
+    for (let i = 0; i < rep.length; i++) {
+      const regex = new RegExp(rep[i], 'g');
+      let flag = false;
+      for (const prop in map) {
+        if (rep[i].match(tag) == prop) {
+          this.str = this.str.replace(regex, map[prop]);
+          flag = true;
         }
-        if (strict && flag === false) {
-          throw new Error();
-        } else {
-          const reg = new RegExp(rep[i] + /\s/, 'g');
-          this.str = this.str.replace(reg, '');
-        }
+      }
+      if (strict && flag === false) {
+        throw new Error();
+      } else {
+        const reg = new RegExp(rep[i] + /\s/, 'g');
+        this.str = this.str.replace(reg, '');
       }
     }
 
