@@ -76,7 +76,7 @@ test('Repeating Tags', () => {
 });
 
 /** */
-test('Misc Char Seperator', () => {
+test('Misc Char: Middle', () => {
   const t = new Templater('Mary {{had}}-{{little}}');
   expect(t.apply({had: 'had', little: 'little'}))
       .toBe('Mary had-little');

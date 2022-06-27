@@ -29,7 +29,6 @@ class Templater {
       return this.str;
     }
 
-    // const re = /\{\{[a-zA-Z]+\}\}/;
     const reNb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/g;
     let flag = false;
 
@@ -40,6 +39,11 @@ class Templater {
         for (const prop in map) {
             for (const i in rep) {
               if (prop == rep[i]) {
+                const reSp = /(?<=\}\}).+(?=\{\{)\{\{[A-Za-z]+/g;
+                let sep = str.match(reSp);
+                if (sep !== null){
+                  console.log(sep.includes("-{{little"));
+                }
                 arr = arr.concat(map[prop]);
               }
             }
