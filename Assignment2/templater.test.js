@@ -81,3 +81,4 @@ test('Misc Char: Middle', () => {
   expect(t.apply({had: 'had', little: 'little'}))
       .toBe('Mary had-little');
 });
+

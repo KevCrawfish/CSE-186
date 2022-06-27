@@ -12,7 +12,7 @@ class Templater {
     if (template === undefined) {
       return;
     }
-    this.str = template.split(' ');
+    this.str = template;
   }
 
   /**
@@ -29,44 +29,28 @@ class Templater {
       return this.str;
     }
 
-    const reNb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/g;
+    const re = /\{\{[A-Za-z]+\}\}/g;
+    const reg = /(?<=\{\{)[A-Za-z]+(?=\}\})/;
+    const rep = this.str.match(re);
     let flag = false;
-
-    let exp = this.str.map((str, index) => {
-      if ((str.match(reNb) !== null) && (flag === false)) {
-        const rep = str.match(reNb);
-        let arr = [];
-        for (const prop in map) {
-            for (const i in rep) {
-              if (prop == rep[i]) {
-                const reSp = /(?<=\}\}).+(?=\{\{)\{\{[A-Za-z]+/g;
-                let sep = str.match(reSp);
-                if (sep !== null){
-                  console.log(sep.includes("-{{little"));
-                }
-                arr = arr.concat(map[prop]);
-              }
-            }
+    
+    for (const i in rep) {
+      let regex = new RegExp(rep[i], 'g');
+      for (const prop in map) {
+        if (rep[i].match(reg) == prop) {
+          this.str = this.str.replace(regex, map[prop]);
         }
-        if ((strict) && (arr.length === 0)) {
-          throw new Error();
-        } else {
-          return arr.join('');
-        }
-      } else {
-        if (str.includes('{') || (flag === true)) {
-          flag = true;
-          if(str.includes('}')){
-            flag = false;
-          }
-          return '';
-        }
-        return str;
       }
-    });
+      if (strict) {
+        throw new Error();
+      } else {
+        this.str = this.str.replace(regex, '');
+      }
+    }
 
-    exp = exp.filter((str) => str);
-    return exp.join(' ');
+    this.str = this.str.replace(/\{\{ *[A-Za-z]+ *\}\}/, '');
+
+    return this.str;
   }
 }
 
