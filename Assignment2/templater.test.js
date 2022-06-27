@@ -28,8 +28,8 @@ test('Missing Tag', () => {
 
 /** */
 test('Scrambled Tag', () => {
-  const t = new Templater('Mary {{had}} a {{little}} {{lamb}}');
-  expect(t.apply({little: 'little', lamb: 'lamb', had: 'had'}))
+  const t = new Templater('{{Elizabeth}} {{owned}} a {{tiny}} {{sheep}}');
+  expect(t.apply({tiny: 'little', sheep: 'lamb', Elizabeth: 'Mary', owned: 'had'}))
       .toBe('Mary had a little lamb');
 });
 
@@ -48,8 +48,15 @@ test('Strict Tag No Error', () => {
 });
 
 /** */
-test('White Spaced Tag', () => {
+test('Space Inside Tag', () => {
   const t = new Templater('Mary {{had }} a {{little}} {{lamb}}');
+  expect(t.apply({had: 'had', little: 'little', lamb: 'lamb'}))
+      .toBe('Mary a little lamb');
+});
+
+/** */
+test('Double Space Seperated Tag', () => {
+  const t = new Templater('Mary {{ had }} a {{little}} {{lamb}}');
   expect(t.apply({had: 'had', little: 'little', lamb: 'lamb'}))
       .toBe('Mary a little lamb');
 });
@@ -59,4 +66,18 @@ test('No Spaces', () => {
   const t = new Templater('Mary {{had}}{{little}}');
   expect(t.apply({had: 'had', little: 'little'}))
       .toBe('Mary hadlittle');
+});
+
+/** */
+test('Repeating Tags', () => {
+  const t = new Templater('Mary {{had}} {{had}}');
+  expect(t.apply({had: 'had', had: 'had'}))
+      .toBe('Mary had had');
+});
+
+/** */
+test('Misc Char Seperator', () => {
+  const t = new Templater('Mary {{had}}-{{little}}');
+  expect(t.apply({had: 'had', little: 'little'}))
+      .toBe('Mary had-little');
 });

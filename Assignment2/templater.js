@@ -31,25 +31,30 @@ class Templater {
 
     // const re = /\{\{[a-zA-Z]+\}\}/;
     const reNb = /(?<=\{\{)[a-zA-Z]+(?=\}\})/g;
+    let flag = false;
 
     let exp = this.str.map((str, index) => {
-      if (str.match(reNb) !== null) {
-        let rep = str.match(reNb);
+      if ((str.match(reNb) !== null) && (flag === false)) {
+        const rep = str.match(reNb);
         let arr = [];
         for (const prop in map) {
-          for (let i in rep) {
-            if (prop == rep[i]) {
-              arr = arr.concat(map[prop]);
+            for (const i in rep) {
+              if (prop == rep[i]) {
+                arr = arr.concat(map[prop]);
+              }
             }
-          }
         }
         if ((strict) && (arr.length === 0)) {
-          throw 'Error';
+          throw new Error();
         } else {
           return arr.join('');
         }
       } else {
-        if (str.includes('{') || str.includes('}')) {
+        if (str.includes('{') || (flag === true)) {
+          flag = true;
+          if(str.includes('}')){
+            flag = false;
+          }
           return '';
         }
         return str;
