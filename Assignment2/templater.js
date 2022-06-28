@@ -37,20 +37,25 @@ class Templater {
       const regex = new RegExp(rep[i], 'g');
       let flag = false;
       for (const prop in map) {
-        if (rep[i].match(tag) == prop) {
-          this.str = this.str.replace(regex, map[prop]);
-          flag = true;
+        if (map.hasOwnProperty(prop) && prop != '') {
+          if (rep[i].match(tag) == prop) {
+            this.str = this.str.replace(regex, map[prop]);
+            flag = true;
+          }
+        } else {
+          this.str = this.str.replace(rep[i], '');
         }
       }
       if (strict && flag === false) {
         throw new Error();
       } else {
-        const reg = new RegExp(rep[i] + /\s/, 'g');
-        this.str = this.str.replace(reg, '');
+        this.str = this.str.replace(rep[i], '');
       }
     }
 
-    this.str = this.str.replace(/\{\{ *[A-Za-z]+ *\}\}\s/, '');
+    this.str = this.str.replace(/\{\{ *[A-Za-z]+ *\}\}/, '');
+    this.str = this.str.replace(/\s+/g, ' ')
+    this.str = this.str.trim();
 
     return this.str;
   }

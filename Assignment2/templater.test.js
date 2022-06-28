@@ -82,3 +82,24 @@ test('Misc Char: Middle', () => {
       .toBe('Mary had-little');
 });
 
+/** */
+test('Undefined Tag', () => {
+  const t = new Templater('Mary {{had}} a {{little}} {{lamb}}');
+  expect(t.apply({'': ''}))
+      .toBe('Mary a');
+});
+
+/** */
+test('No Tags', () => {
+  const t = new Templater('Mary {{had}} a {{little}} {{lamb}}');
+  expect(t.apply({}))
+      .toBe('Mary a');
+});
+
+/** */
+test('No Spaces and Missing Tag', () => {
+  const t = new Templater('Mary {{had}}{{little}}');
+  expect(t.apply({little: 'little'}))
+      .toBe('Mary little');
+});
+
