@@ -23,9 +23,13 @@ class Templater {
   byTag(document, json) {
     for (let i = 0; i < this.tag.length; i++){
       let str = this.tag[i].outerHTML.match(/(?<=\{\{)[\w]+(?=\}\})/);
-      let regex = new RegExp('(?<=' + str + '\\"\\:\\")[\\w\\s]+(?=\\"\\,)', 'g');
+      let regex = new RegExp('(?<=' + str + '\\"\\:\\")[\\w\\s.]+(?=\\")', 'g');
       let find = json.match(regex);
-      this.tag[i].innerHTML = this.tag[i].innerHTML.replace(/\{\{[\w]+\}\}/, find);
+      if (find === null) {
+        this.tag[i].innerHTML = this.tag[i].innerHTML.replace(/\{\{[\w]+\}\}/, '');
+      } else {
+        this.tag[i].innerHTML = this.tag[i].innerHTML.replace(/\{\{[\w]+\}\}/, find);
+      }
     }
   }
 
@@ -41,7 +45,9 @@ class Templater {
 
 function funcByTag() {
   let t = new Templater(document.getElementsByTagName('th'));
+  let t2 = new Templater(document.getElementsByTagName('td'));
   t.byTag(document, document.getElementById('json').value);
+  t2.byTag(document, document.getElementById('json').value);
 }
 
 // To satisfy linter rules
