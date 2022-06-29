@@ -40,6 +40,14 @@ class Templater {
    * @param {string} json with propeties matching element ids in document
    */
   byId(document, json) {
+    let str = this.tag.match(/(?<=\")[A-Z][0-9]+(?=\"\:)/g);
+    let content = this.tag.match(/(?<=\")[A-Z][0-9]+(?=\"\:)/g);
+    for (let i = 0; i < str.length; i++){
+      let id = document.getElementById(str[i]);
+      let regex = new RegExp('(?<=' + str[i] + '\\"\\:\\")[\\w\\s.]+(?=\\")', 'g');
+      let find = this.tag.match(regex);
+      id.textContent = find;
+    }
   }
 }
 
@@ -48,6 +56,11 @@ function funcByTag() {
   let t2 = new Templater(document.getElementsByTagName('td'));
   t.byTag(document, document.getElementById('json').value);
   t2.byTag(document, document.getElementById('json').value);
+}
+
+function funcById() {
+  let t = new Templater(document.getElementById('json').value);
+  t.byId(document, document.getElementById('json').value);
 }
 
 // To satisfy linter rules
