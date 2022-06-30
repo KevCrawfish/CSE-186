@@ -6,6 +6,19 @@
   <title> CSE186 Assignment 3 - Basic </title>
   <link href="templater.css" rel="stylesheet"/> 
   <script type="text/javascript" src="Templater.js"></script>
+  <script>
+    function funcByTag() {
+    const t = new Templater(document.getElementsByTagName('th'));
+    const t2 = new Templater(document.getElementsByTagName('td'));
+    t.byTag(document, document.getElementById('json').value);
+    t2.byTag(document, document.getElementById('json').value);
+  }
+
+  function funcById() {
+    const t = new Templater(document.getElementById('json').value);
+    t.byId(document, document.getElementById('json').value);
+  }
+  </script>
 </head> 
 <body>
   <table>
@@ -28,10 +41,12 @@
       <td id="R31">{{R31}}</td>
       <td id="R32">{{R32}}</td>
       <td id="R33">{{R33}}</td>
+    </tr>
     <tr>
       <td id="R41">{{R41}}</td>
       <td id="R42">{{R42}}</td>
       <td id="R43">{{R43}}</td>
+    </tr>
     <tr>
       <td id="R51">{{R51}}</td>
       <td id="R52">{{R52}}</td>
