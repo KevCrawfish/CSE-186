@@ -112,15 +112,10 @@ function pickDate(document, months, date, dn) {
     }
   } else {
     if (document.getElementsByClassName('today')[0] != undefined) {
-      document.getElementsByClassName('today')[0].id = document.getElementById('swap').classList[0];
       document.getElementsByClassName('today')[0].classList.remove('today');
     }
     date.setDate(document.getElementById('d'+dn).textContent);
     document.getElementById('d'+dn).classList.add('today');
-    document.getElementById('d'+dn).id = 'today';
-    document.getElementById('swap').removeAttribute('class');
-    document.getElementById('swap').classList.add('d'+dn);
-    document.getElementById('swap').textContent = document.getElementById('display').textContent;
   }
   console.log(date);
 }
@@ -134,10 +129,16 @@ window.addEventListener('DOMContentLoaded', function(e) {
 
   // add functionality for next button
   document.getElementById('next').addEventListener('click', function(e) {
+    if(document.getElementById('today') != undefined) {
+      document.getElementById('today').id = document.getElementById('swap').classList[0];
+    }
     nextMonth(document, months, date);
   });
   // add functionality for prev button
   document.getElementById('prev').addEventListener('click', function(e) {
+    if(document.getElementById('today') != undefined) {
+      document.getElementById('today').id = document.getElementById('swap').classList[0];
+    }
     prevMonth(document, months, date);
   });
   // add functionality for returning to today's date
@@ -166,7 +167,7 @@ window.addEventListener('DOMContentLoaded', function(e) {
     });
   }
 
-  for (let i = date.getDate(); i <= 41; i++) {
+    for (let i = date.getDate(); i <= 41; i++) {
     if (document.getElementById('d'+i).textContent == date.getDate()) {
       // set highlight on today's date, change class for css
       document.getElementById('d'+i).classList.add('today');
