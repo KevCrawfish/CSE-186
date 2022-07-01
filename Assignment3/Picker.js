@@ -56,7 +56,7 @@ function setDate(document, months, date) {
 */
 function nextMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
-      .forEach((x) => x.classList.remove('grey', 'before'));
+      .forEach((xs) => xs.classList.remove('grey', 'before'));
 
   date.setDate(1);
   date.setMonth(date.getMonth()+1);
@@ -71,7 +71,7 @@ function nextMonth(document, months, date) {
 */
 function prevMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
-      .forEach((x) => x.classList.remove('grey', 'before'));
+      .forEach((xs) => xs.classList.remove('grey', 'before'));
 
   date.setDate(1);
   date.setMonth(date.getMonth()-1);
