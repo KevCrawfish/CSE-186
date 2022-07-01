@@ -24,8 +24,7 @@ function setDate(document, months, date) {
   const lastDay = new Date(date.getFullYear(), date.getMonth()+1, 0);
   const prevMonth = new Date(date.getFullYear(), date.getMonth(), 0);
 
-  document.getElementById('month').textContent = months[date.getMonth()];
-  document.getElementById('year').textContent = date.getFullYear();
+  document.getElementById('display').textContent = months[date.getMonth()] + ' ' + date.getFullYear();
 
   let d = firstDay.getDay();
   let j = 0;
