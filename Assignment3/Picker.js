@@ -130,25 +130,37 @@ window.addEventListener('DOMContentLoaded', function(e) {
   // add functionality for next button
   document.getElementById('next').addEventListener('click', function(e) {
     if (document.getElementById('today') != undefined) {
-      document.getElementById('today').id = document.getElementById('swap').classList[0];
+      document.getElementById('today').id =
+          document.getElementById('swap').classList[0];
     }
     nextMonth(document, months, date);
-    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) == document.getElementById('swap').textContent) {
-      document.getElementById(document.getElementById('swap').classList[0]).id = 'today';
+    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) ==
+        document.getElementById('swap').textContent) {
+      document.getElementById(document.getElementById('swap').classList[0]).id =
+          'today';
     }
   });
+
   // add functionality for prev button
   document.getElementById('prev').addEventListener('click', function(e) {
     if (document.getElementById('today') != undefined) {
-      document.getElementById('today').id = document.getElementById('swap').classList[0];
+      document.getElementById('today').id =
+          document.getElementById('swap').classList[0];
     }
     prevMonth(document, months, date);
-    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) == document.getElementById('swap').textContent) {
-      document.getElementById(document.getElementById('swap').classList[0]).id = 'today';
+    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) ==
+        document.getElementById('swap').textContent) {
+      document.getElementById(document.getElementById('swap').classList[0]).id =
+          'today';
     }
   });
+
   // add functionality for returning to today's date
   document.getElementById('display').addEventListener('click', function(e) {
+    if (document.getElementById('today') != undefined) {
+      document.getElementById('today').id =
+          document.getElementById('swap').classList[0];
+    }
     const today = new Date();
     for (let d = 0; d <= 41; d++) {
       document.getElementById('d'+d).removeAttribute('class');
@@ -161,6 +173,10 @@ window.addEventListener('DOMContentLoaded', function(e) {
       if (document.getElementById('d'+i).textContent == date.getDate()) {
         // set highlight on today's date, change class for css
         document.getElementById('d'+i).classList.add('today');
+        document.getElementById('swap').classList.add('d'+i);
+        document.getElementById('swap').textContent =
+            document.getElementById('display').textContent;
+        document.getElementById('d'+i).id = 'today';
         break;
       }
     }
@@ -173,12 +189,14 @@ window.addEventListener('DOMContentLoaded', function(e) {
     });
   }
 
-    for (let i = date.getDate(); i <= 41; i++) {
+  // set today div to today's date
+  for (let i = date.getDate(); i <= 41; i++) {
     if (document.getElementById('d'+i).textContent == date.getDate()) {
       // set highlight on today's date, change class for css
       document.getElementById('d'+i).classList.add('today');
       document.getElementById('swap').classList.add('d'+i);
-      document.getElementById('swap').textContent = document.getElementById('display').textContent;
+      document.getElementById('swap').textContent =
+          document.getElementById('display').textContent;
       document.getElementById('d'+i).id = 'today';
       break;
     }
