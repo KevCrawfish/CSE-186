@@ -58,11 +58,7 @@ function nextMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
       .forEach(x => x.classList.remove('grey', 'before'));
 
-  const thisMonth = new Date(date.getFullYear(), date.getMonth()+1, 1);
-  date.setMonth(thisMonth.getMonth());
-  if (date.getFullYear() !== thisMonth.getFullYear()) {
-    date.setFullYear(thisMonth.getFullYear());
-  }
+  date.setMonth(date.getMonth()+1);
   setDate(document, months, date);
 }
 
@@ -76,11 +72,8 @@ function prevMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
       .forEach(x => x.classList.remove('grey', 'before'));
 
-  const thisMonth = new Date(date.getFullYear(), date.getMonth()-1, 1);
-  date.setMonth(thisMonth.getMonth());
-  if (date.getFullYear() !== thisMonth.getFullYear()) {
-    date.setFullYear(thisMonth.getFullYear());
-  }
+  date.setDate(1);
+  date.setMonth(date.getMonth()-1);
   setDate(document, months, date);
 }
 
@@ -92,11 +85,11 @@ function prevMonth(document, months, date) {
 * @param {Integer} dn current #dn
 */
 function pickDate(document, months, date, dn) {
-  date.setDate(document.getElementById('d'+dn).textContent);
-
   if (document.getElementById('d'+dn).classList.contains('grey')) {
     if (document.getElementById('d'+dn).classList.contains('before')) {
+      cur = document.getElementById('d'+dn).textContent;
       prevMonth(document, months, date);
+      date.setDate(cur);
       for (let i = 0; i <= 41; i++) {
         if ((document.getElementById('d'+i).textContent == date.getDate()) &&
             (!document.getElementById('d'+i).classList.contains('grey'))) {
@@ -105,7 +98,9 @@ function pickDate(document, months, date, dn) {
         }
       }
     } else {
+      cur = document.getElementById('d'+dn).textContent;
       nextMonth(document, months, date);
+      date.setDate(cur);
       for (let i = 0; i <= 41; i++) {
         if ((document.getElementById('d'+i).textContent == date.getDate()) &&
             (!document.getElementById('d'+i).classList.contains('grey'))) {
@@ -118,6 +113,7 @@ function pickDate(document, months, date, dn) {
     if (document.getElementsByClassName('today')[0] != undefined) {
       document.getElementsByClassName('today')[0].classList.remove('today');
     }
+    date.setDate(document.getElementById('d'+dn).textContent);
     document.getElementById('d'+dn).classList.add('today');
   }
   console.log(date);
