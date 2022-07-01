@@ -58,6 +58,7 @@ function nextMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
       .forEach((x) => x.classList.remove('grey', 'before'));
 
+  date.setDate(1);
   date.setMonth(date.getMonth()+1);
   setDate(document, months, date);
 }
