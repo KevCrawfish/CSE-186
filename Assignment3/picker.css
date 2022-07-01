@@ -1,1 +1,12 @@
 /* CSS for the Advanced requirement */
+
+.grey{
+    color: #d9d9d9;
+}
+
+.pick{
+    height: 25px;
+    width: 25px;
+    background-color: #ea8777;
+    border-radius: 50%;
+}
