@@ -129,17 +129,23 @@ window.addEventListener('DOMContentLoaded', function(e) {
 
   // add functionality for next button
   document.getElementById('next').addEventListener('click', function(e) {
-    if(document.getElementById('today') != undefined) {
+    if (document.getElementById('today') != undefined) {
       document.getElementById('today').id = document.getElementById('swap').classList[0];
     }
     nextMonth(document, months, date);
+    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) == document.getElementById('swap').textContent) {
+      document.getElementById(document.getElementById('swap').classList[0]).id = 'today';
+    }
   });
   // add functionality for prev button
   document.getElementById('prev').addEventListener('click', function(e) {
-    if(document.getElementById('today') != undefined) {
+    if (document.getElementById('today') != undefined) {
       document.getElementById('today').id = document.getElementById('swap').classList[0];
     }
     prevMonth(document, months, date);
+    if (((months[date.getMonth()]) + ' ' + (date.getFullYear())) == document.getElementById('swap').textContent) {
+      document.getElementById(document.getElementById('swap').classList[0]).id = 'today';
+    }
   });
   // add functionality for returning to today's date
   document.getElementById('display').addEventListener('click', function(e) {

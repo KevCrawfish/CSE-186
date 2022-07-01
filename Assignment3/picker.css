@@ -7,14 +7,14 @@
     height: 295px;
 }
 
-.today {
+.today, #today {
     height: 15px;
     width: 15px;
     background-color: #ea8777;
     border-radius: 50%;
 }
 
-.today:hover {
+.today:hover, #today:hover {
     box-shadow: 0px 0px 0px 2px #d9d9d9 inset;
     background-color: #ea8777;
 }
