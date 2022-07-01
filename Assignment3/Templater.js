@@ -27,11 +27,9 @@ class Templater {
           '(?<=' + str + '\\"\\:\\")[\\w\\s.]+(?=\\")', 'g');
       const find = json.match(regex);
       if (find === null) {
-        this.tag[i].innerHTML = this.tag[i].innerHTML.replace(
-            /\{\{[\w]+\}\}/, '');
+        this.tag[i].innerHTML = this.tag[i].textContent = '';
       } else {
-        this.tag[i].innerHTML = this.tag[i].innerHTML.replace(
-            /\{\{[\w]+\}\}/, find);
+        this.tag[i].innerHTML = this.tag[i].textContent = find;
       }
     }
   }
