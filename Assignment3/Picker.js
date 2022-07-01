@@ -17,24 +17,30 @@ class Picker {
 * @param {Date} date current date
 */
 function setDate(document, months, date) {
+  if (document.getElementsByClassName('today')[0] != undefined) {
+    document.getElementsByClassName('today')[0].classList.remove('today');
+  }
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth()+1, 0);
   const prevMonth = new Date(date.getFullYear(), date.getMonth(), 0);
+
   document.getElementById('month').textContent = months[date.getMonth()];
   document.getElementById('year').textContent = date.getFullYear();
+
   let d = firstDay.getDay();
   let j = 0;
   const boundDay = new Date(date.getFullYear(), date.getMonth(), 1-d);
   for (let i = boundDay.getDate(); i <= prevMonth.getDate(); i++) {
     if (boundDay.getDate() != 1) {
-      document.getElementById('d'+j).classList.add('grey');
-      document.getElementById('d'+j).classList.add('before');
+      document.getElementById('d'+j).classList.add('grey', 'before');
     }
     document.getElementById('d'+j++).textContent = i;
   }
+  
   for (let i = 1; i <= lastDay.getDate(); i++) {
     document.getElementById('d'+d++).textContent = i;
   }
+
   j = 1;
   for (d; d <=41; d++) {
     document.getElementById('d'+d).classList.add('grey');
@@ -49,11 +55,10 @@ function setDate(document, months, date) {
 * @param {Date} date current date
 */
 function nextMonth(document, months, date) {
-  for (let d = 0; d <= 41; d++) {
-    document.getElementById('d'+d).removeAttribute('class');
-  }
+  Array.from(document.getElementsByClassName('grey'))
+      .forEach(x => x.classList.remove('grey', 'before'));
+
   const thisMonth = new Date(date.getFullYear(), date.getMonth()+1, 1);
-  date.setDate(thisMonth.getDate());
   date.setMonth(thisMonth.getMonth());
   if (date.getFullYear() !== thisMonth.getFullYear()) {
     date.setFullYear(thisMonth.getFullYear());
@@ -68,11 +73,10 @@ function nextMonth(document, months, date) {
 * @param {Date} date current date
 */
 function prevMonth(document, months, date) {
-  for (let d = 0; d <= 41; d++) {
-    document.getElementById('d'+d).removeAttribute('class');
-  }
+  Array.from(document.getElementsByClassName('grey'))
+      .forEach(x => x.classList.remove('grey', 'before'));
+
   const thisMonth = new Date(date.getFullYear(), date.getMonth()-1, 1);
-  date.setDate(thisMonth.getDate());
   date.setMonth(thisMonth.getMonth());
   if (date.getFullYear() !== thisMonth.getFullYear()) {
     date.setFullYear(thisMonth.getFullYear());
@@ -88,15 +92,11 @@ function prevMonth(document, months, date) {
 * @param {Integer} dn current #dn
 */
 function pickDate(document, months, date, dn) {
-  for (let i = 0; i <= 41; i++) {
-    document.getElementById('d'+i).classList.remove('today');
-  }
+  date.setDate(document.getElementById('d'+dn).textContent);
 
   if (document.getElementById('d'+dn).classList.contains('grey')) {
     if (document.getElementById('d'+dn).classList.contains('before')) {
-      t = document.getElementById('d'+dn).textContent;
       prevMonth(document, months, date);
-      date.setDate(t);
       for (let i = 0; i <= 41; i++) {
         if ((document.getElementById('d'+i).textContent == date.getDate()) &&
             (!document.getElementById('d'+i).classList.contains('grey'))) {
@@ -105,9 +105,7 @@ function pickDate(document, months, date, dn) {
         }
       }
     } else {
-      t = document.getElementById('d'+dn).textContent;
       nextMonth(document, months, date);
-      date.setDate(t);
       for (let i = 0; i <= 41; i++) {
         if ((document.getElementById('d'+i).textContent == date.getDate()) &&
             (!document.getElementById('d'+i).classList.contains('grey'))) {
@@ -117,7 +115,9 @@ function pickDate(document, months, date, dn) {
       }
     }
   } else {
-    date.setDate(document.getElementById('d'+dn).textContent);
+    if (document.getElementsByClassName('today')[0] != undefined) {
+      document.getElementsByClassName('today')[0].classList.remove('today');
+    }
     document.getElementById('d'+dn).classList.add('today');
   }
   console.log(date);
