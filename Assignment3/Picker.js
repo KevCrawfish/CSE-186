@@ -24,7 +24,8 @@ function setDate(document, months, date) {
   const lastDay = new Date(date.getFullYear(), date.getMonth()+1, 0);
   const prevMonth = new Date(date.getFullYear(), date.getMonth(), 0);
 
-  document.getElementById('display').textContent = months[date.getMonth()] + ' ' + date.getFullYear();
+  document.getElementById('display').textContent = months[date.getMonth()] +
+      ' ' + date.getFullYear();
 
   let d = firstDay.getDay();
   let j = 0;
@@ -35,7 +36,7 @@ function setDate(document, months, date) {
     }
     document.getElementById('d'+j++).textContent = i;
   }
-  
+
   for (let i = 1; i <= lastDay.getDate(); i++) {
     document.getElementById('d'+d++).textContent = i;
   }
@@ -55,7 +56,7 @@ function setDate(document, months, date) {
 */
 function nextMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
-      .forEach(x => x.classList.remove('grey', 'before'));
+      .forEach((x) => x.classList.remove('grey', 'before'));
 
   date.setMonth(date.getMonth()+1);
   setDate(document, months, date);
@@ -69,7 +70,7 @@ function nextMonth(document, months, date) {
 */
 function prevMonth(document, months, date) {
   Array.from(document.getElementsByClassName('grey'))
-      .forEach(x => x.classList.remove('grey', 'before'));
+      .forEach((x) => x.classList.remove('grey', 'before'));
 
   date.setDate(1);
   date.setMonth(date.getMonth()-1);
