@@ -15,7 +15,7 @@ function firstDayNext(relative) {
  * @param {number} relative months ahead or behind the current date
  * @return {date} first day of the relative month
  */
- function firstDayPrev(relative) {
+function firstDayPrev(relative) {
   const date = new Date();
   date.setDate(1);
   date.setMonth(date.getMonth()-relative);

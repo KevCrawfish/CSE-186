@@ -91,14 +91,15 @@ function pickDate(document, months, date, dn) {
   for (let i = 0; i <= 41; i++) {
     document.getElementById('d'+i).classList.remove('today');
   }
-  
+
   if (document.getElementById('d'+dn).classList.contains('grey')) {
     if (document.getElementById('d'+dn).classList.contains('before')) {
       t = document.getElementById('d'+dn).textContent;
       prevMonth(document, months, date);
       date.setDate(t);
-      for(let i = 0; i <= 41; i++) {
-        if ((document.getElementById('d'+i).textContent == date.getDate()) && (!document.getElementById('d'+i).classList.contains('grey'))) {
+      for (let i = 0; i <= 41; i++) {
+        if ((document.getElementById('d'+i).textContent == date.getDate()) &&
+            (!document.getElementById('d'+i).classList.contains('grey'))) {
           document.getElementById('d'+i).classList.add('today');
           break;
         }
@@ -107,8 +108,9 @@ function pickDate(document, months, date, dn) {
       t = document.getElementById('d'+dn).textContent;
       nextMonth(document, months, date);
       date.setDate(t);
-      for(let i = 0; i <= 41; i++) {
-        if ((document.getElementById('d'+i).textContent == date.getDate()) && (!document.getElementById('d'+i).classList.contains('grey'))) {
+      for (let i = 0; i <= 41; i++) {
+        if ((document.getElementById('d'+i).textContent == date.getDate()) &&
+            (!document.getElementById('d'+i).classList.contains('grey'))) {
           document.getElementById('d'+i).classList.add('today');
           break;
         }
@@ -122,19 +124,28 @@ function pickDate(document, months, date, dn) {
 }
 
 window.addEventListener('DOMContentLoaded', function(e) {
+  // initial setup for calendar
   const months = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
   const date = new Date();
-  document.getElementById('d'+(date.getDate()+2)).classList.add('today');
   setDate(document, months, date);
+  for (let i = date.getDate(); i <= 41; i++) {
+    if (document.getElementById('d'+i).textContent == date.getDate()) {
+      // set highlight on today's date, change class for css
+      document.getElementById('d'+i).classList.add('today');
+      break;
+    }
+  }
+
+  // add functionality for next button
   document.getElementById('next').addEventListener('click', function(e) {
     nextMonth(document, months, date);
   });
-  document.getElementById('next').className = 'enabledButton';
+  // add functionality for prev button
   document.getElementById('prev').addEventListener('click', function(e) {
     prevMonth(document, months, date);
   });
-  document.getElementById('prev').className = 'enabledButton';
+  // add functionality for returning to today's date
   document.getElementById('display').addEventListener('click', function(e) {
     const today = new Date();
     for (let d = 0; d <= 41; d++) {
@@ -143,12 +154,18 @@ window.addEventListener('DOMContentLoaded', function(e) {
     date.setDate(today.getDate());
     date.setMonth(today.getMonth());
     date.setFullYear(today.getFullYear());
-    document.getElementById('d'+(date.getDate()+2)).classList.add('today');
     setDate(document, months, date);
+    for (let i = date.getDate(); i <= 41; i++) {
+      if (document.getElementById('d'+i).textContent == date.getDate()) {
+        // set highlight on today's date, change class for css
+        document.getElementById('d'+i).classList.add('today');
+        break;
+      }
+    }
   });
-  document.getElementById('display').className = 'enabledButton';
 
-  for(let i = 0; i <= 41; i++) {
+  // add functionality for picking date
+  for (let i = 0; i <= 41; i++) {
     document.getElementById('d'+i).addEventListener('click', function(e) {
       pickDate(document, months, date, i);
     });
