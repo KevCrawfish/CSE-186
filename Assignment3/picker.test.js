@@ -58,7 +58,7 @@ test('Next Months', async () => {
 //
 // //////////////////////////////////////////////////////////
 
-// Clicks the next button a random number of times then checks the first
+// Clicks the prev button a random number of times then checks the first
 // day of the displayed month is correct.  For example, July 1, 2021 falls
 // on a Thursday, the 5h day of the week when weeks start on Sundays.
 test('Previous Months', async () => {
