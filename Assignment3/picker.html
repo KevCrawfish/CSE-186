@@ -6,82 +6,14 @@
   <title> CSE186 Assignment 3 - Advanced</title>
   <link href="picker.css" rel="stylesheet"/> 
   <script type="text/javascript" src="Picker.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(e) {
+      const picker = new Picker(document.getElementById('picker'));
+      picker.generate();
+    });
+  </script>
 </head> 
 <body>
-  <div id="picker">
-    <div id="top">
-      <span id="prev"></span>
-      <span id="next"></span>
-      <div id="display"></div>
-    </div>
-    <div id="table">
-      <table id = "days">
-        <tr>
-          <th id="S">S</th>
-          <th id="M">M</th>
-          <th id="T">T</th>
-          <th id="W">W</th>
-          <th id="T">T</th>
-          <th id="F">F</th>
-          <th id="S">S</th>
-        </tr>
-        <tr>
-          <td id="d0">30</th>
-          <td id="d1">31</th>
-          <td id="d2">1</th>
-          <td id="d3">2</th>
-          <td id="d4">3</th>
-          <td id="d5">4</th>
-          <td id="d6">5</th>
-        </tr>
-        <tr>
-          <td id="d7">6</th>
-          <td id="d8">7</th>
-          <td id="d9">8</th>
-          <td id="d10">9</th>
-          <td id="d11">10</th>
-          <td id="d12">11</th>
-          <td id="d13">12</th>
-        </tr>
-        <tr>
-          <td id="d14">13</th>
-          <td id="d15">14</th>
-          <td id="d16">15</th>
-          <td id="d17">16</th>
-          <td id="d18">17</th>
-          <td id="d19">18</th>
-          <td id="d20">19</th>
-        </tr>
-        <tr>
-          <td id="d21">20</th>
-          <td id="d22">21</th>
-          <td id="d23">22</th>
-          <td id="d24">23</th>
-          <td id="d25">24</th>
-          <td id="d26">25</th>
-          <td id="d27">26</th>
-        </tr>
-        <tr>
-          <td id="d28">27</th>
-          <td id="d29">28</th>
-          <td id="d30">29</th>
-          <td id="d31">30</th>
-          <td id="d32">1</th>
-          <td id="d33">2</th>
-          <td id="d34">3</th>
-        </tr>
-        <tr>
-          <td id="d35">4</th>
-          <td id="d36">5</th>
-          <td id="d37">6</th>
-          <td id="d38">7</th>
-          <td id="d39">8</th>
-          <td id="d40">9</th>
-          <td id="d41">10</th>
-        </tr>
-      </table>
-      <div id="swap" style="display: none"></div>
-    </div>
-  </div>
+  <div id="picker"></div>
 </body> 
 </html>
