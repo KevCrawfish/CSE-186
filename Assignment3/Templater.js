@@ -8,10 +8,6 @@ class Templater {
    * data elements
    */
   constructor(template) {
-    if (template === undefined) {
-      return;
-    }
-    this.tag = template;
   }
 
   /**
@@ -21,15 +17,38 @@ class Templater {
    * @param {string} json with propeties matching tags in document
    */
   byTag(document, json) {
-    for (let i = 0; i < this.tag.length; i++) {
-      const str = this.tag[i].outerHTML.match(/(?<=\{\{)[\w]+(?=\}\})/);
-      const regex = new RegExp(
-          '(?<=' + str + '\\"\\:\\")[\\w\\s.]+(?=\\")', 'g');
-      const find = json.match(regex);
-      if (find === null) {
-        this.tag[i].innerHTML = this.tag[i].textContent = '';
-      } else {
-        this.tag[i].innerHTML = this.tag[i].textContent = find;
+    let arr = document.getElementsByTagName('th');
+    const map = JSON.parse(json);
+    for (let i = 0; i < arr.length; i++) {
+      let flag = true;
+      for (const prop in map) {
+        if ((map.hasOwnProperty(prop)) &&
+          (prop != '') &&
+            (prop == arr[i].textContent.match(/(?<=\{\{).+(?=\}\})/))) {
+          arr[i].textContent = map[prop];
+          flag = false;
+          break;
+        }
+      }
+      if(flag === true) {
+        arr[i].textContent = '';
+      }
+    }
+
+    arr = document.getElementsByTagName('td');
+    for (let i = 0; i < arr.length; i++) {
+      let flag = true;
+      for (const prop in map) {
+        if ((map.hasOwnProperty(prop)) &&
+          (prop != '') &&
+            (prop == arr[i].textContent.match(/(?<=\{\{).+(?=\}\})/))) {
+          arr[i].textContent = map[prop];
+          flag = false;
+          break;
+        }
+      }
+      if(flag === true) {
+        arr[i].textContent = '';
       }
     }
   }
@@ -41,14 +60,6 @@ class Templater {
    * @param {string} json with propeties matching element ids in document
    */
   byId(document, json) {
-    const str = this.tag.match(/(?<=\")[A-Z][0-9]+(?=\"\:)/g);
-    for (let i = 0; i < str.length; i++) {
-      const id = document.getElementById(str[i]);
-      const regex = new RegExp(
-          '(?<=' + str[i] + '\\"\\:\\")[\\w\\s.]+(?=\\")', 'g');
-      const find = this.tag.match(regex);
-      id.textContent = find;
-    }
   }
 }
 

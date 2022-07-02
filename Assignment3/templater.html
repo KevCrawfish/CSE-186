@@ -7,17 +7,15 @@
   <link href="templater.css" rel="stylesheet"/> 
   <script type="text/javascript" src="Templater.js"></script>
   <script>
-    function funcByTag() {
-    const t = new Templater(document.getElementsByTagName('th'));
-    const t2 = new Templater(document.getElementsByTagName('td'));
-    t.byTag(document, document.getElementById('json').value);
-    t2.byTag(document, document.getElementById('json').value);
-  }
-
-  function funcById() {
-    const t = new Templater(document.getElementById('json').value);
-    t.byId(document, document.getElementById('json').value);
-  }
+    window.addEventListener('DOMContentLoaded', function(e) {
+      const t = new Templater();
+      document.getElementById('byTag').addEventListener('click', function(e) {
+        t.byTag(document, document.getElementById('json').value);
+      });
+      document.getElementById('byId').addEventListener('click', function(e) {
+        t.byTag(document, document.getElementById('json').value);
+      });
+    });
   </script>
 </head> 
 <body>
@@ -66,7 +64,7 @@
 }
   </textarea>
   <p>
-  <button id="byTag" onclick="funcByTag()">By Tag</button>
-  <button id="byId" onclick="funcById()">By Id</button>
+  <button id="byTag">By Tag</button>
+  <button id="byId">By Id</button>
 </body> 
 </html>
