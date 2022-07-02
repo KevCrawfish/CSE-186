@@ -30,7 +30,7 @@ class Templater {
           break;
         }
       }
-      if(flag === true) {
+      if (flag === true) {
         arr[i].textContent = '';
       }
     }
@@ -47,7 +47,7 @@ class Templater {
           break;
         }
       }
-      if(flag === true) {
+      if (flag === true) {
         arr[i].textContent = '';
       }
     }
@@ -60,6 +60,29 @@ class Templater {
    * @param {string} json with propeties matching element ids in document
    */
   byId(document, json) {
+    const map = JSON.parse(json);
+
+    for (const prop in map) {
+      if ((map.hasOwnProperty(prop)) && (prop != '')) {
+        document.getElementById(prop).textContent = map[prop];
+      }
+    }
+
+    for (let i = 1; i <= 3; i++) {
+      if (document.getElementById('H'+i).textContent.match(/\{\{/) !=
+          undefined) {
+        document.getElementById('H'+i).textContent = '';
+      }
+    }
+
+    for (let i = 1; i <= 5; i++) {
+      for (let j = 1; j <= 3; j++) {
+        if (document.getElementById('R'+i+j).textContent.match(/\{\{/) !=
+          undefined) {
+          document.getElementById('R'+i+j).textContent = '';
+        }
+      }
+    }
   }
 }
 
