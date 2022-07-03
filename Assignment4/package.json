@@ -1,0 +1,56 @@
+{
+  "name": "cse186-assignment4",
+  "version": "1.0.0",
+  "description": "CSE186 Assignment 4 - React I",
+  "author": "David Harrison <dcharris@ucsc.edu>",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "dependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "*",
+    "@testing-library/react": "*",
+    "@testing-library/user-event": "*",
+    "bestzip": "*",
+    "eslint-config-google": "*",
+    "eslint-plugin-react": "*",
+    "eslint-plugin-react-hooks": "*",
+    "react-scripts": "*"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "test": "react-scripts test --coverage --collectCoverageFrom=!src/index.js",
+    "lint": "eslint src/*.js src/__tests__/*.js",
+    "zip": "bestzip CSE186-Assignment4-Submission.zip src/* src/__tests__/*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "google"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 12
+    },
+    "rules": {
+      "indent": [
+        "warn",
+        2
+      ]
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
