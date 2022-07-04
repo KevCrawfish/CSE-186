@@ -19,7 +19,11 @@ class Picker extends React.Component {
     this.greys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this.state = {date: this.date, days: this.numbers, grey: this.greys};
+    this.todays = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.state = {date: this.date, days: this.numbers, grey: this.greys,
+      today: this.todays};
   }
 
   /**
@@ -35,9 +39,10 @@ class Picker extends React.Component {
    */
   setDate = (date) => {
     this.date = new Date(date.getFullYear(), date.getMonth());
-    this.pickDate = new Date(date.getFullYear(), date.getMonth(),
+    this.pickedDate = new Date(date.getFullYear(), date.getMonth(),
       date.getDate());
     this.setPicker();
+    console.log(this.state);
   };
 
   /**
@@ -45,36 +50,29 @@ class Picker extends React.Component {
    * @param {int} index index of table
    */
   pickDate = (index) => {
-    const prev = this.numbers[index];
     if (this.greys[index] === 1) {
       if (this.numbers[index] >= 20) {
+        const temp = new Date(this.date);
+        temp.setMonth(this.date.getMonth() - 1);
+        this.pickedDate = new Date(temp.getFullYear(),
+          temp.getMonth(), this.numbers[index]);
         this.changeMonth(-1);
       } else {
+        const temp = new Date(this.date);
+        temp.setMonth(this.date.getMonth() + 1);
+        this.pickedDate = new Date(temp.getFullYear(),
+          temp.getMonth(), this.numbers[index]);
         this.changeMonth(1);
       }
     } else {
-      this.setState({date: this.date, days: this.numbers, grey: this.greys});
+      this.todays.fill(0);
+      this.todays[index] = 1;
+      this.pickedDate = new Date(this.date.getFullYear(),
+        this.date.getMonth(), this.numbers[index]);
+      this.setState({date: this.date, days: this.numbers, grey: this.greys,
+        today: this.todays});
     }
-    this.pickedDate = new Date(this.date.getFullYear(),
-      this.date.getMonth(), prev);
     console.log(this.pickedDate);
-  };
-
-  /**
-   *
-   * @param {int} index index of table
-   * @param {string} tag current id of table
-   * @return {string} id to be returned
-   */
-  setTag = (index, tag) => {
-    if (this.numbers[index] === this.pickedDate.getDate() &&
-    this.pickedDate.getMonth() === this.date.getMonth() &&
-    this.pickedDate.getFullYear() === this.date.getFullYear() &&
-    this.greys[index] === 0) {
-      return 'today';
-    } else {
-      return tag;
-    }
   };
 
   /**
@@ -91,10 +89,18 @@ class Picker extends React.Component {
     for (i = firstDay.getDay() - 1; i >= 0; i--) {
       this.numbers[i] = j--;
       this.greys[i] = 1;
+      this.todays[i] = 0;
     }
     j = 1;
     for (i = firstDay.getDay();
       i < lastDay.getDate() + firstDay.getDay(); i++) {
+      if (j === this.pickedDate.getDate() &&
+      this.pickedDate.getMonth() === this.date.getMonth() &&
+      this.pickedDate.getFullYear() === this.date.getFullYear()) {
+        this.todays[i] = 1;
+      } else {
+        this.todays[i] = 0;
+      }
       this.numbers[i] = j++;
       this.greys[i] = 0;
     }
@@ -102,8 +108,10 @@ class Picker extends React.Component {
     for (i; i <= 41; i++) {
       this.numbers[i] = j++;
       this.greys[i] = 1;
+      this.todays[i] = 0;
     }
-    this.setState({date: this.date, days: this.numbers, grey: this.greys});
+    this.setState({date: this.date, days: this.numbers, grey: this.greys,
+      today: this.todays});
   };
 
   /**
@@ -149,132 +157,153 @@ class Picker extends React.Component {
             </thead>
             <tbody>
               <tr>
-                <td id={this.setTag(0, 'd0')}
+                <td id={this.todays[0] === 1 ? 'today' : 'd0'}
                   className={this.state.grey[0] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(0)}>{this.state.days[0]}</td>
-                <td id={this.setTag(1, 'd1')}
+                <td id={this.todays[1] === 1 ? 'today' : 'd1'}
                   className={this.state.grey[1] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(1)}>{this.state.days[1]}</td>
-                <td id={this.setTag(2, 'd2')}
+                <td id={this.todays[2] === 1 ? 'today' : 'd2'}
                   className={this.state.grey[2] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(2)}>{this.state.days[2]}</td>
-                <td id={this.setTag(3, 'd3')}
+                <td id={this.todays[3] === 1 ? 'today' : 'd3'}
                   className={this.state.grey[3] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(3)}>{this.state.days[3]}</td>
-                <td id={this.setTag(4, 'd4')}
+                <td id={this.todays[4] === 1 ? 'today' : 'd4'}
                   className={this.state.grey[4] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(4)}>{this.state.days[4]}</td>
-                <td id={this.setTag(5, 'd5')}
+                <td id={this.todays[5] === 1 ? 'today' : 'd5'}
                   className={this.state.grey[5] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(5)}>{this.state.days[5]}</td>
-                <td id={this.setTag(6, 'd6')}
+                <td id={this.todays[6] === 1 ? 'today' : 'd6'}
                   className={this.state.grey[6] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(6)}>{this.state.days[6]}</td>
               </tr>
               <tr>
-                <td id={this.setTag(7, 'd7')} onClick={() => this.pickDate(7)}
+                <td id={this.todays[7] === 1 ? 'today' : 'd7'}
+                  onClick={() => this.pickDate(7)}
                 >{this.state.days[7]}</td>
-                <td id={this.setTag(8, 'd8')} onClick={() => this.pickDate(8)}
+                <td id={this.todays[8] === 1 ? 'today' : 'd8'}
+                  onClick={() => this.pickDate(8)}
                 >{this.state.days[8]}</td>
-                <td id={this.setTag(9, 'd9')} onClick={() => this.pickDate(9)}
+                <td id={this.todays[9] === 1 ? 'today' : 'd9'}
+                  onClick={() => this.pickDate(9)}
                 >{this.state.days[9]}</td>
-                <td id={this.setTag(10, 'd10')} onClick={() =>
-                  this.pickDate(10)}>{this.state.days[10]}</td>
-                <td id={this.setTag(11, 'd11')} onClick={() =>
-                  this.pickDate(11)}>{this.state.days[11]}</td>
-                <td id={this.setTag(12, 'd12')} onClick={() =>
-                  this.pickDate(12)}>{this.state.days[12]}</td>
-                <td id={this.setTag(13, 'd13')} onClick={() =>
-                  this.pickDate(13)}>{this.state.days[13]}</td>
+                <td id={this.todays[10] === 1 ? 'today' : 'd10'}
+                  onClick={() => this.pickDate(10)}
+                >{this.state.days[10]}</td>
+                <td id={this.todays[11] === 1 ? 'today' : 'd11'}
+                  onClick={() => this.pickDate(11)}
+                >{this.state.days[11]}</td>
+                <td id={this.todays[12] === 1 ? 'today' : 'd12'}
+                  onClick={() => this.pickDate(12)}
+                >{this.state.days[12]}</td>
+                <td id={this.todays[13] === 1 ? 'today' : 'd13'}
+                  onClick={() => this.pickDate(13)}
+                >{this.state.days[13]}</td>
               </tr>
               <tr>
-                <td id={this.setTag(14, 'd14')} onClick={() =>
-                  this.pickDate(14)}>{this.state.days[14]}</td>
-                <td id={this.setTag(15, 'd15')} onClick={() =>
-                  this.pickDate(15)}>{this.state.days[15]}</td>
-                <td id={this.setTag(16, 'd16')} onClick={() =>
-                  this.pickDate(16)}>{this.state.days[16]}</td>
-                <td id={this.setTag(17, 'd17')} onClick={() =>
-                  this.pickDate(17)}>{this.state.days[17]}</td>
-                <td id={this.setTag(18, 'd18')} onClick={() =>
-                  this.pickDate(18)}>{this.state.days[18]}</td>
-                <td id={this.setTag(19, 'd19')} onClick={() =>
-                  this.pickDate(19)}>{this.state.days[19]}</td>
-                <td id={this.setTag(20, 'd20')} onClick={() =>
-                  this.pickDate(20)}>{this.state.days[20]}</td>
+                <td id={this.todays[14] === 1 ? 'today' : 'd14'}
+                  onClick={() => this.pickDate(14)}
+                >{this.state.days[14]}</td>
+                <td id={this.todays[15] === 1 ? 'today' : 'd15'}
+                  onClick={() => this.pickDate(15)}
+                >{this.state.days[15]}</td>
+                <td id={this.todays[16] === 1 ? 'today' : 'd16'}
+                  onClick={() => this.pickDate(16)}
+                >{this.state.days[16]}</td>
+                <td id={this.todays[17] === 1 ? 'today' : 'd17'}
+                  onClick={() => this.pickDate(17)}
+                >{this.state.days[17]}</td>
+                <td id={this.todays[18] === 1 ? 'today' : 'd18'}
+                  onClick={() => this.pickDate(18)}
+                >{this.state.days[18]}</td>
+                <td id={this.todays[19] === 1 ? 'today' : 'd19'}
+                  onClick={() => this.pickDate(19)}
+                >{this.state.days[19]}</td>
+                <td id={this.todays[20] === 1 ? 'today' : 'd20'}
+                  onClick={() => this.pickDate(20)}
+                >{this.state.days[20]}</td>
               </tr>
               <tr>
-                <td id={this.setTag(21, 'd21')} onClick={() =>
-                  this.pickDate(21)}>{this.state.days[21]}</td>
-                <td id={this.setTag(22, 'd22')} onClick={() =>
-                  this.pickDate(22)}>{this.state.days[22]}</td>
-                <td id={this.setTag(23, 'd23')} onClick={() =>
-                  this.pickDate(23)}>{this.state.days[23]}</td>
-                <td id={this.setTag(24, 'd24')} onClick={() =>
-                  this.pickDate(24)}>{this.state.days[24]}</td>
-                <td id={this.setTag(25, 'd25')} onClick={() =>
-                  this.pickDate(25)}>{this.state.days[25]}</td>
-                <td id={this.setTag(26, 'd26')} onClick={() =>
-                  this.pickDate(26)}>{this.state.days[26]}</td>
-                <td id={this.setTag(27, 'd27')} onClick={() =>
-                  this.pickDate(27)}>{this.state.days[27]}</td>
+                <td id={this.todays[21] === 1 ? 'today' : 'd21'}
+                  onClick={() => this.pickDate(21)}
+                >{this.state.days[21]}</td>
+                <td id={this.todays[22] === 1 ? 'today' : 'd22'}
+                  onClick={() => this.pickDate(22)}
+                >{this.state.days[22]}</td>
+                <td id={this.todays[23] === 1 ? 'today' : 'd23'}
+                  onClick={() => this.pickDate(23)}
+                >{this.state.days[23]}</td>
+                <td id={this.todays[24] === 1 ? 'today' : 'd24'}
+                  onClick={() => this.pickDate(24)}
+                >{this.state.days[24]}</td>
+                <td id={this.todays[25] === 1 ? 'today' : 'd25'}
+                  onClick={() => this.pickDate(25)}
+                >{this.state.days[25]}</td>
+                <td id={this.todays[26] === 1 ? 'today' : 'd26'}
+                  onClick={() => this.pickDate(26)}
+                >{this.state.days[26]}</td>
+                <td id={this.todays[27] === 1 ? 'today' : 'd27'}
+                  onClick={() => this.pickDate(27)}
+                >{this.state.days[27]}</td>
               </tr>
               <tr>
-                <td id={this.setTag(28, 'd28')}
+                <td id={this.todays[28] === 1 ? 'today' : 'd28'}
                   className={this.state.grey[28] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(28)}>
                   {this.state.days[28]}</td>
-                <td id={this.setTag(29, 'd29')}
+                <td id={this.todays[29] === 1 ? 'today' : 'd29'}
                   className={this.state.grey[29] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(29)}>
                   {this.state.days[29]}</td>
-                <td id={this.setTag(30, 'd30')}
+                <td id={this.todays[30] === 1 ? 'today' : 'd30'}
                   className={this.state.grey[30] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(30)}>
                   {this.state.days[30]}</td>
-                <td id={this.setTag(31, 'd31')}
+                <td id={this.todays[31] === 1 ? 'today' : 'd31'}
                   className={this.state.grey[31] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(31)}>
                   {this.state.days[31]}</td>
-                <td id={this.setTag(32, 'd32')}
+                <td id={this.todays[32] === 1 ? 'today' : 'd32'}
                   className={this.state.grey[32] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(32)}>
                   {this.state.days[32]}</td>
-                <td id={this.setTag(33, 'd33')}
+                <td id={this.todays[33] === 1 ? 'today' : 'd33'}
                   className={this.state.grey[33] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(33)}>
                   {this.state.days[33]}</td>
-                <td id={this.setTag(34, 'd34')}
+                <td id={this.todays[34] === 1 ? 'today' : 'd34'}
                   className={this.state.grey[34] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(34)}>
                   {this.state.days[34]}</td>
               </tr>
               <tr>
-                <td id={this.setTag(35, 'd35')}
+                <td id={this.todays[35] === 1 ? 'today' : 'd35'}
                   className={this.state.grey[35] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(35)}>
                   {this.state.days[35]}</td>
-                <td id={this.setTag(36, 'd36')}
+                <td id={this.todays[36] === 1 ? 'today' : 'd36'}
                   className={this.state.grey[36] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(36)}>
                   {this.state.days[36]}</td>
-                <td id={this.setTag(37, 'd37')}
+                <td id={this.todays[37] === 1 ? 'today' : 'd37'}
                   className={this.state.grey[37] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(37)}>
                   {this.state.days[37]}</td>
-                <td id={this.setTag(38, 'd38')}
+                <td id={this.todays[38] === 1 ? 'today' : 'd38'}
                   className={this.state.grey[38] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(38)}>
                   {this.state.days[38]}</td>
-                <td id={this.setTag(39, 'd39')}
+                <td id={this.todays[39] === 1 ? 'today' : 'd39'}
                   className={this.state.grey[39] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(39)}>
                   {this.state.days[39]}</td>
-                <td id={this.setTag(40, 'd40')}
+                <td id={this.todays[40] === 1 ? 'today' : 'd40'}
                   className={this.state.grey[40] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(40)}>
                   {this.state.days[40]}</td>
-                <td id={this.setTag(41, 'd41')}
+                <td id={this.todays[41] === 1 ? 'today' : 'd41'}
                   className={this.state.grey[41] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(41)}>
                   {this.state.days[41]}</td>

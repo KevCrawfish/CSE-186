@@ -15,7 +15,8 @@ class App extends React.Component {
    */
   constructor(props) {
     super(props);
-    this.state = {date: '', disabled: true};
+    this.pickRef = React.createRef();
+    this.state = {date: new Date(), disabled: true};
   }
   /**
    *
@@ -31,9 +32,9 @@ class App extends React.Component {
     if (date.getMonth() + 1 === +input[0] &&
       date.getDate() === +input[1] &&
       date.getFullYear() === +input[2]) {
-      this.setState({date: event.target.value, disabled: false});
+      this.setState({date: date, disabled: false});
     } else {
-      this.setState({date: event.target.value, disabled: true});
+      this.setState({date: new Date(), disabled: true});
     }
   };
 
@@ -44,7 +45,7 @@ class App extends React.Component {
     return (
       <div>
         <h2>CSE186 Assignment 4 - React I</h2>
-        <Picker />
+        <Picker ref={this.pickRef}/>
         <input
           id="date"
           type="text"
@@ -54,6 +55,7 @@ class App extends React.Component {
         <button
           id='set'
           disabled={this.state.disabled}
+          onClick={() => this.pickRef.current.setDate(this.state.date)}
         >Set</button>
       </div>
     );
