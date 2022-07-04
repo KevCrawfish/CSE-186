@@ -1,1 +1,7 @@
 /* Your App styles go here */
+
+#date, #set {
+    position: relative;
+    top: 10px;
+    left: 39px;
+}

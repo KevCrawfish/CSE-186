@@ -10,6 +10,34 @@ import './App.css';
  */
 class App extends React.Component {
   /**
+   *
+   * @param {props} props
+   */
+  constructor(props) {
+    super(props);
+    this.state = {date: '', disabled: true};
+  }
+  /**
+   *
+   * @param {event} event event
+   */
+  handleInput = (event) => {
+    /**
+     * Reference: Šime Vidas
+     * https://stackoverflow.com/questions/8647893/regular-expression-leap-years-and-more
+     */
+    const date = new Date(event.target.value);
+    const input = event.target.value.split('/');
+    if (date.getMonth() + 1 === +input[0] &&
+      date.getDate() === +input[1] &&
+      date.getFullYear() === +input[2]) {
+      this.setState({date: event.target.value, disabled: false});
+    } else {
+      this.setState({date: event.target.value, disabled: true});
+    }
+  };
+
+  /**
    * @return {object} a <div> containing an <h2>
    */
   render() {
@@ -17,6 +45,16 @@ class App extends React.Component {
       <div>
         <h2>CSE186 Assignment 4 - React I</h2>
         <Picker />
+        <input
+          id="date"
+          type="text"
+          placeholder='MM/DD/YYYY'
+          onInput={ (event) => this.handleInput(event)}
+        />
+        <button
+          id='set'
+          disabled={this.state.disabled}
+        >Set</button>
       </div>
     );
   }

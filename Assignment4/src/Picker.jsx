@@ -31,6 +31,17 @@ class Picker extends React.Component {
 
   /**
    *
+   * @param {date} date date to set to
+   */
+  setDate = (date) => {
+    this.date = new Date(date.getFullYear(), date.getMonth());
+    this.pickDate = new Date(date.getFullYear(), date.getMonth(),
+      date.getDate());
+    this.setPicker();
+  };
+
+  /**
+   *
    * @param {int} index index of table
    */
   pickDate = (index) => {
@@ -42,7 +53,7 @@ class Picker extends React.Component {
         this.changeMonth(1);
       }
     } else {
-      this.setState({date: this.date, days: this.numbers});
+      this.setState({date: this.date, days: this.numbers, grey: this.greys});
     }
     this.pickedDate = new Date(this.date.getFullYear(),
       this.date.getMonth(), prev);
