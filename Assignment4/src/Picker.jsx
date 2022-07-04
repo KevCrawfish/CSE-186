@@ -43,6 +43,9 @@ class Picker extends React.Component {
   */
 
   changeMonth = (offset) => {
+    if (offset === 0) {
+      this.date = new Date();
+    }
     this.date.setMonth(this.date.getMonth() + offset);
     this.setState({date: this.date});
   };
@@ -58,8 +61,9 @@ class Picker extends React.Component {
         <div id="top">
           <span id="prev" onClick={ () => this.changeMonth(-1)}></span>
           <span id="next" onClick={ () => this.changeMonth(1)}></span>
-          <div id="display">{months[this.state.date.getMonth()] +
-            ' ' + this.state.date.getFullYear()}</div>
+          <div id="display" onClick={ () => this.changeMonth(0)}>{
+            months[this.state.date.getMonth()] +
+              ' ' + this.state.date.getFullYear()}</div>
         </div>
         <div id="table">
           <table id="days">
