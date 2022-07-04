@@ -1,1 +1,79 @@
 /* Your Picker styles go here */
+#picker {
+    border: 2px solid #ea8777;
+    border-radius: 26px;
+    width: 268px;
+    height: 295px;
+}
+
+.today, #today {
+    height: 15px;
+    width: 15px;
+    background-color: #ea8777;
+    border-radius: 50%;
+}
+
+.today:hover, #today:hover {
+    box-shadow: 0px 0px 0px 2px #d9d9d9 inset;
+    background-color: #ea8777;
+}
+
+.grey{
+    color: #d9d9d9;
+}
+
+th{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+td{
+    text-align: center;
+    padding: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+td:hover{
+    height: 15px;
+    width: 15px;
+    background-color: rgba(156, 156, 156, 0.653);
+    border-radius: 50%;
+}
+
+#top {
+    position: relative;
+    width: 268px;
+    height: 30px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    background-image: radial-gradient(#f5c1c8, #ea8777);
+}
+
+#prev {
+    position: absolute;
+    left: 15px;
+    top: 4px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid;
+}
+
+#next {
+    position: absolute;
+    left: 245px;
+    top: 4px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid;
+}
+
+#days {
+    position: absolute;
+}
+
+#display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
