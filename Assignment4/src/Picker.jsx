@@ -71,7 +71,6 @@ class Picker extends React.Component {
       this.setState({date: this.date, days: this.numbers, grey: this.greys,
         today: this.todays});
     }
-    console.log(this.pickedDate);
   };
 
   /**
@@ -135,8 +134,10 @@ class Picker extends React.Component {
     return (
       <div id="picker">
         <div id="top">
-          <span id="prev" onClick={ () => this.changeMonth(-1)}></span>
-          <span id="next" onClick={ () => this.changeMonth(1)}></span>
+          <span id="prev" aria-label='prev'
+            onClick={ () => this.changeMonth(-1)}></span>
+          <span id="next" aria-label='next'
+            onClick={ () => this.changeMonth(1)}></span>
           <div id="display" onClick={ () => this.changeMonth(0)}>{
             months[this.state.date.getMonth()] +
               ' ' + this.state.date.getFullYear()}</div>
