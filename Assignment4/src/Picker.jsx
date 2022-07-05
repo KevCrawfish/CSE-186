@@ -176,7 +176,6 @@ class Picker extends React.Component {
                   className={this.state.grey[5] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(5)}>{this.state.days[5]}</td>
                 <td id={this.todays[6] === 1 ? 'today' : 'd6'}
-                  className={this.state.grey[6] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(6)}>{this.state.days[6]}</td>
               </tr>
               <tr>
@@ -287,23 +286,23 @@ class Picker extends React.Component {
                   className={this.state.grey[36] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(36)}>
                   {this.state.days[36]}</td>
-                <td id={this.todays[37] === 1 ? 'today' : 'd37'}
+                <td id='d37'
                   className={this.state.grey[37] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(37)}>
                   {this.state.days[37]}</td>
-                <td id={this.todays[38] === 1 ? 'today' : 'd38'}
+                <td id='d38'
                   className={this.state.grey[38] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(38)}>
                   {this.state.days[38]}</td>
-                <td id={this.todays[39] === 1 ? 'today' : 'd39'}
+                <td id='d39'
                   className={this.state.grey[39] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(39)}>
                   {this.state.days[39]}</td>
-                <td id={this.todays[40] === 1 ? 'today' : 'd40'}
+                <td id='d40'
                   className={this.state.grey[40] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(40)}>
                   {this.state.days[40]}</td>
-                <td id={this.todays[41] === 1 ? 'today' : 'd41'}
+                <td id='d41'
                   className={this.state.grey[41] === 1 ? 'grey' : ''}
                   onClick={() => this.pickDate(41)}>
                   {this.state.days[41]}</td>

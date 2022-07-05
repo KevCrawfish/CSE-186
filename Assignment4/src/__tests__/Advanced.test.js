@@ -361,3 +361,31 @@ test('pick display', async () => {
   await user.click(screen.getByText('June 2022'));
   expect(screen.getAllByText(date.getDate())[0].id).toBe('today');
 });
+
+test('pick d36 not gray', async () => {
+  const user = new userEvent.setup();
+  render(<App />); 
+  await user.click(screen.getByLabelText('next'));
+  await user.click(screen.getByLabelText('next'));
+  await user.click(screen.getByLabelText('next'));
+  await user.click(screen.getAllByText('31')[0]);
+  expect(screen.getAllByText('31')[0].id).toBe('today');
+});
+
+test('pick d1 not gray', async () => {
+  const user = new userEvent.setup();
+  render(<App />); 
+  await user.click(screen.getByLabelText('prev'));
+  await user.click(screen.getByLabelText('prev'));
+  await user.click(screen.getAllByText('1')[0]);
+  expect(screen.getAllByText('1')[0].id).toBe('today');
+});
+
+test('pick d28 not gray', async () => {
+  const user = new userEvent.setup();
+  render(<App />);
+  for(let i = 1; i <= 89; i++) {
+    await user.click(screen.getByLabelText('prev'));
+  } 
+  expect(screen.getAllByText('1')[1].className).toBe('grey');
+});
