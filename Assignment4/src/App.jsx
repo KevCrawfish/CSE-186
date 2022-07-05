@@ -40,6 +40,7 @@ class App extends React.Component {
 
   /**
    * @return {object} a <div> containing an <h2>
+   * References: CSE 186 Lecture 7
    */
   render() {
     return (
