@@ -1,4 +1,5 @@
-import {render} from '@testing-library/react';
+import {waitFor, fireEvent, screen, render} from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 import App from '../App';
 
 test('Nothing', () => {
@@ -10,12 +11,12 @@ test('Init Display', async () => {
   const date = new Date();
   const months = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
-  expect(document.getElementById('display').textContent).toBe(months[date.getMonth()] + ' ' + date.getFullYear());
+  expect(screen.getByText('July 2022')).toBeInTheDocument();
 });
 
 test('Init Date', async () => {
   render(<App />); 
   const date = new Date();
-  expect(document.getElementById('today').textContent).toBe(date.getDate().toString());
+  expect(screen.getAllByText(date.getDate())[0].id).toBe('today');
 });
 
