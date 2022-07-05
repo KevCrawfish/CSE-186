@@ -1,10 +1,10 @@
-import {waitFor, fireEvent, screen, render} from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import {screen, render} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 
 /**
  * Credit to https://github.com/testing-library/user-event
- * https://github.com/testing-library/react-testing-library 
+ * https://github.com/testing-library/react-testing-library
  */
 
 test('Nothing', () => {
@@ -17,34 +17,34 @@ test('Button On Load', async () => {
 });
 
 test('Typing Basic', async () => {
-  const user = new userEvent.setup();
+  const user = userEvent.setup();
   render(<App />);
   const input = screen.getByPlaceholderText('MM/DD/YYYY');
-  await userEvent.type(input, '12/01/1998');
+  await user.type(input, '12/01/1998');
   expect(input.value).toBe('12/01/1998');
 });
 
 test('Button Enabled', async () => {
-  const user = new userEvent.setup();
+  const user = userEvent.setup();
   render(<App />);
   const input = screen.getByPlaceholderText('MM/DD/YYYY');
-  await userEvent.type(input, '12/01/1998');
+  await user.type(input, '12/01/1998');
   expect(screen.getByText('Set')).not.toBeDisabled();
 });
 
 test('Close But Needs Backslashes', async () => {
-  const user = new userEvent.setup();
+  const user = userEvent.setup();
   render(<App />);
   const input = screen.getByPlaceholderText('MM/DD/YYYY');
-  await userEvent.type(input, '12-01-1998');
+  await user.type(input, '12-01-1998');
   expect(screen.getByText('Set')).toBeDisabled();
 });
 
 test('Display After Clicking Set', async () => {
-  const user = new userEvent.setup();
+  const user = userEvent.setup();
   render(<App />);
   const input = screen.getByPlaceholderText('MM/DD/YYYY');
-  await userEvent.type(input, '12/01/1998');
-  await userEvent.click(screen.getByText('Set'));
+  await user.type(input, '12/01/1998');
+  await user.click(screen.getByText('Set'));
   expect(screen.getByText('December 1998')).toBeInTheDocument();
 });
