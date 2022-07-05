@@ -42,7 +42,6 @@ class Picker extends React.Component {
     this.pickedDate = new Date(date.getFullYear(), date.getMonth(),
       date.getDate());
     this.setPicker();
-    console.log(this.state);
   };
 
   /**
