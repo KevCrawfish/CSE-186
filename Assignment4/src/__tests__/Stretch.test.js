@@ -2,6 +2,11 @@ import {waitFor, fireEvent, screen, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import App from '../App';
 
+/**
+ * Credit to https://github.com/testing-library/user-event
+ * https://github.com/testing-library/react-testing-library 
+ */
+
 test('Nothing', () => {
   render(<App />);
 });

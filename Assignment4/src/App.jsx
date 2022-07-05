@@ -26,6 +26,7 @@ class App extends React.Component {
     /**
      * Reference: Šime Vidas
      * https://stackoverflow.com/questions/8647893/regular-expression-leap-years-and-more
+     * Thank you for an idea of how to make the input function without regex
      */
     const date = new Date(event.target.value);
     const input = event.target.value.split('/');
