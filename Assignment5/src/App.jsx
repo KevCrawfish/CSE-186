@@ -5,6 +5,28 @@
  * the express written permission of the copyright holder.
  */
 
+/**
+ * References:
+ * https://mui.com/material-ui/react-app-bar/
+ * https://codesandbox.io/s/mm5dth?file=/demo.tsx
+ * https://codesandbox.io/s/e61oho?file=/demo.tsx
+ * https://mui.com/material-ui/react-box/
+ * https://mui.com/material-ui/api/icon-button/
+ * https://mui.com/material-ui/material-icons/
+ * https://mui.com/material-ui/api/toolbar/
+ * https://mui.com/material-ui/api/typography/
+ * https://mui.com/material-ui/react-button/
+ * https://mui.com/material-ui/react-drawer/
+ * https://mui.com/material-ui/react-list/
+ * https://mui.com/material-ui/api/list-item/
+ * https://mui.com/material-ui/api/list-item-button/
+ * https://mui.com/material-ui/api/list-item-text/
+ * https://mui.com/material-ui/react-grid/
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+ */
+
 import React from 'react';
 import loader from './data/loader';
 import AppBar from '@mui/material/AppBar';
@@ -19,8 +41,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-// import Divider from '@mui/material/Divider';
-// import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import emails from './data/emails.json';
 
