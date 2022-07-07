@@ -45,6 +45,7 @@ function App() {
     from: '',
     subject: '',
     address: '',
+    content: '',
   });
   const [inboxOpen, setInboxOpen] = React.useState('inbox');
   const [inboxName, setInboxName] = React.useState('Inbox');
@@ -63,13 +64,13 @@ function App() {
     }
   };
 
-  const handleMailOpen = (contF, contS, contA) => {
+  const handleMailOpen = (contF, contS, contA, contC) => {
     if (mailOpen.load === 'none') {
       setMailOpen({load: 'block', from: contF, subject: contS,
-        address: contA});
+        address: contA, content: contC});
     } else {
       setMailOpen({load: 'none', from: '', subject: '',
-        address: ''});
+        address: '', content: ''});
     }
   };
 
@@ -173,11 +174,10 @@ function App() {
                   sx={{marginTop: 4}}
                   aria-label={email.from.name + ' ' + email.subject}
                   onClick={() => handleMailOpen(email.from.name,
-                    email.subject, email.from.address)}>
+                    email.subject, email.from.address, email.content)}>
                   {email.from.name}</ListItemButton>
                 <ListItem>{email.subject}</ListItem>
                 <ListItem>{handleRecieved(email.received)}</ListItem>
-                <ListItem>{email.mailbox}</ListItem>
               </List>
             ))}
           </Grid>
@@ -193,21 +193,21 @@ function App() {
           >
             Subject: {mailOpen.subject}
           </Typography>
-          <Button variant="outlined"
+          <Button variant="text"
             color='secondary'
-            position='absolute'
+            position='relative'
             aria-label='close desktop reader'
             onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
               mailOpen.address)}
-            sx={{top: 0, right: 0}}
-          >x</Button>
+            sx={{top: 0, right: 0, zIndex: 0}}>
+          </Button>
           <Button variant="outlined"
             color='secondary'
             position='absolute'
             aria-label='close mobile reader'
             onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
-              mailOpen.address)}
-            sx={{top: 0, right: 0}}
+              mailOpen.address, mailOpen.content)}
+            sx={{top: 0, right: 0, zIndex: 1}}
           >x</Button>
         </Toolbar>
         <Box>
@@ -225,6 +225,15 @@ function App() {
           >
             From: {mailOpen.from} ({mailOpen.address})
           </Typography>
+          <Box>
+            <Typography
+              variant="string"
+              component="div"
+              sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
+            >
+              {mailOpen.content}
+            </Typography>
+          </Box>
         </Box>
       </AppBar>
     </Box>
