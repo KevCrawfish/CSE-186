@@ -65,10 +65,10 @@ function App() {
   const handleMailOpen = (contF, contS, contA) => {
     if (mailOpen.load === 'none') {
       setMailOpen({load: 'block', from: contF, subject: contS,
-      address: contA});
+        address: contA});
     } else {
       setMailOpen({load: 'none', from: '', subject: '',
-      address: ''});
+        address: ''});
     }
   };
 
@@ -95,7 +95,8 @@ function App() {
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{textAlign: 'center'}}>
+            <ListItemButton sx={{textAlign: 'center'}}
+              onClick={ () => handleInboxOpen(item)}>
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
@@ -106,20 +107,6 @@ function App() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box component="nav"
-        sx={{border: 1, marginTop: 7,
-          display: {xs: 'none', sm: 'block'}}}>
-        <List>
-          {navItems.map((item) => (
-            <ListItem key={item} disablePadding>
-              <ListItemButton onClick={ () => handleInboxOpen(item)}
-                sx={{textAlign: 'center'}}>
-                <ListItemText primary={item} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -130,13 +117,6 @@ function App() {
             sx={{mr: 2, display: {sm: 'none'}}}
           >
             <MenuIcon />
-            <Typography
-              variant="h6"
-              component="div"
-              paddingLeft="10px"
-              sx={{mr: 2, display: {sm: 'none'}}}
-            >
-            </Typography>
           </IconButton>
           <Typography
             variant="h6"
@@ -145,6 +125,14 @@ function App() {
           >
             CSE186 Mail - {inboxName}
           </Typography>
+          <Box sx={{display: {xs: 'none', sm: 'block'}}}>
+            {navItems.map((item) => (
+              <Button key={item} sx={{color: '#fff'}}
+                onClick={ () => handleInboxOpen(item)}>
+                {item}
+              </Button>
+            ))}
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -174,7 +162,7 @@ function App() {
                   sx={{marginTop: 4}}
                   aria-label={email.from.name + ' ' + email.subject}
                   onClick={() => handleMailOpen(email.from.name,
-                  email.subject, email.from.address)}>
+                    email.subject, email.from.address)}>
                   {email.from.name}</ListItemButton>
                 <ListItem>{email.subject}</ListItem>
                 <ListItem>{handleRecieved(email.received)}</ListItem>
@@ -187,7 +175,7 @@ function App() {
       <AppBar position="fixed" color="primary" sx={{top: 'auto', bottom: 0,
         display: mailOpen.load}}>
         <Toolbar>
-        <Typography
+          <Typography
             variant="h6"
             component="div"
             sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
@@ -195,12 +183,12 @@ function App() {
             Subject: {mailOpen.subject}
           </Typography>
           <Button variant="outlined"
-          color='secondary'
-          position='absolute'
-          aria-label='close desktop reader'
-          onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
-            mailOpen.address)}
-          sx={{top: 0, right: 0}}
+            color='secondary'
+            position='absolute'
+            aria-label='close desktop reader'
+            onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
+              mailOpen.address)}
+            sx={{top: 0, right: 0}}
           >x</Button>
         </Toolbar>
         <Box>
