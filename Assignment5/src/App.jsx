@@ -26,6 +26,7 @@ import emails from './data/emails.json';
 
 
 loader(); // do not remove this!
+loader();
 
 /**
  * Simple component with no state.
@@ -76,17 +77,17 @@ function App() {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
       'Sep', 'Oct', 'Nov', 'Dec'];
     const today = new Date();
-    const date = rec.match(/([0-9]+)-([0-9]+)-([0-9]+)(?=T)/);
-    const time = rec.match(/([0-9]+):([0-9]+):([0-9]+)(?=Z)/);
+    const date = new Date(rec);
 
-    if (today.getFullYear() === +date[1] &&
-    today.getMonth() + 1 === +date[2] &&
-    today.getDate() === +date[3]) {
-      return time[1] + ':' + time[2];
-    } else if (today.getFullYear() === +date[1]) {
-      return months[+date[2]-1] + ' ' + date[3];
+    if (today.getFullYear() === date.getFullYear() &&
+    today.getMonth() === date.getMonth() &&
+    today.getDate() === date.getDate()) {
+      return '0' + date.getHours() + ':' + date.getMinutes();
+    } else if (today.getFullYear() === date.getFullYear()) {
+      return months[date.getMonth()] + (date.getDate() < 10 ? ' 0' : ' ') +
+          date.getDate();
     } else {
-      return +date[1];
+      return date.getFullYear();
     }
   };
 
@@ -102,6 +103,23 @@ function App() {
           </ListItem>
         ))}
       </List>
+    </Box>
+  );
+
+  const [dimensions, setDimensions] = React.useState('block');
+  const handleResize = () => {
+    setDimensions('none');
+  };
+  window.addEventListener('resize', handleResize);
+
+  const topBar = (
+    <Box display={dimensions}>
+      {navItems.map((item) => (
+        <Button key={item} sx={{color: '#fff'}}
+          onClick={ () => handleInboxOpen(item)}>
+          {item}
+        </Button>
+      ))}
     </Box>
   );
 
@@ -125,14 +143,7 @@ function App() {
           >
             CSE186 Mail - {inboxName}
           </Typography>
-          <Box sx={{display: {xs: 'none', sm: 'block'}}}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{color: '#fff'}}
-                onClick={ () => handleInboxOpen(item)}>
-                {item}
-              </Button>
-            ))}
-          </Box>
+          {topBar}
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -186,6 +197,14 @@ function App() {
             color='secondary'
             position='absolute'
             aria-label='close desktop reader'
+            onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
+              mailOpen.address)}
+            sx={{top: 0, right: 0}}
+          >x</Button>
+          <Button variant="outlined"
+            color='secondary'
+            position='absolute'
+            aria-label='close mobile reader'
             onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
               mailOpen.address)}
             sx={{top: 0, right: 0}}
