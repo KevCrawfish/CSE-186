@@ -64,17 +64,16 @@ function App() {
     const date = rec.match(/([0-9]+)-([0-9]+)-([0-9]+)(?=T)/);
     const time = rec.match(/([0-9]+):([0-9]+):([0-9]+)(?=Z)/);
 
-    if (today.getDate() === +date[3]) {
+    if (today.getFullYear() === +date[1] &&
+    today.getMonth() + 1 === +date[2] &&
+    today.getDate() === +date[3]) {
       return time[1] + ':' + time[2];
     } else if (today.getFullYear() === +date[1]) {
-      return months[+date[2]] + ' ' + date[3];
+      return months[+date[2]-1] + ' ' + date[3];
     } else {
       return +date[1];
     }
   };
-
-  if (handleInboxOpen) {
-  }
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
@@ -129,7 +128,7 @@ function App() {
             component="div"
             sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
           >
-            CSE183 Mail - {inboxName}
+            CSE186 Mail - {inboxName}
           </Typography>
         </Toolbar>
       </AppBar>
