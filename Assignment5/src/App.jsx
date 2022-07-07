@@ -41,13 +41,36 @@ function App() {
   const navItems = ['Inbox', 'Trash'];
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [inboxOpen, setInboxOpen] = React.useState('inbox');
+  const [inboxName, setInboxName] = React.useState('Inbox');
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleInboxOpen = () => {
-    setInboxOpen('trash');
+  const handleInboxOpen = (item) => {
+    if (item === 'Trash') {
+      setInboxOpen('trash');
+      setInboxName('Trash');
+    } else {
+      setInboxOpen('inbox');
+      setInboxName('Inbox');
+    }
+  };
+
+  const handleRecieved = (rec) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+      'Sep', 'Oct', 'Nov', 'Dec'];
+    const today = new Date();
+    const date = rec.match(/([0-9]+)-([0-9]+)-([0-9]+)(?=T)/);
+    const time = rec.match(/([0-9]+):([0-9]+):([0-9]+)(?=Z)/);
+
+    if (today.getDate() === +date[3]) {
+      return time[1] + ':' + time[2];
+    } else if (today.getFullYear() === +date[1]) {
+      return months[+date[2]] + ' ' + date[3];
+    } else {
+      return +date[1];
+    }
   };
 
   if (handleInboxOpen) {
@@ -69,13 +92,14 @@ function App() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box component="toggle"
+      <Box component="nav"
         sx={{border: 1, marginTop: 7,
           display: {xs: 'none', sm: 'block'}}}>
         <List>
           {navItems.map((item) => (
             <ListItem key={item} disablePadding>
-              <ListItemButton sx={{textAlign: 'center'}}>
+              <ListItemButton onClick={ () => handleInboxOpen(item)}
+                sx={{textAlign: 'center'}}>
                 <ListItemText primary={item} />
               </ListItemButton>
             </ListItem>
@@ -98,7 +122,6 @@ function App() {
               paddingLeft="10px"
               sx={{mr: 2, display: {sm: 'none'}}}
             >
-            CSE186 -
             </Typography>
           </IconButton>
           <Typography
@@ -106,7 +129,7 @@ function App() {
             component="div"
             sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
           >
-            CSE186 -
+            CSE183 Mail - {inboxName}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -129,17 +152,17 @@ function App() {
       </Box>
       <Box component="main" sx={{p: 3}}>
         <Grid container spacing={5} >
-          <Grid item xs={50}>
-          </Grid>
-          <Grid item xs={50} sm={30}>
-            {emails.filter((email) => (email.mailbox.
-              includes(inboxOpen))).map( (email) => (
-              <tr key={email.id}>
-                <td>{email.from.name}</td>
-                <td>{email.subject}</td>
-                <td>{email.received}</td>
-                <td>{email.mailbox}</td>
-              </tr>
+          <Grid item xs={30} sm={30}>
+            {emails.filter((email) => (email.mailbox.includes(inboxOpen)
+            )).map( (email) => (
+              <List key={email.id}>
+                <ListItemButton
+                  sx={{marginTop: 4}}
+                  onClick={handleDrawerToggle}>
+                  {email.from.name} {email.subject}</ListItemButton>
+                <ListItem>{handleRecieved(email.received)}</ListItem>
+                <ListItem>{email.mailbox}</ListItem>
+              </List>
             ))}
           </Grid>
         </Grid>
