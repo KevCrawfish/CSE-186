@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -23,7 +23,6 @@ import ListItemText from '@mui/material/ListItemText';
 // import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import emails from './data/emails.json';
-// import Divider from '@mui/material/Divider';
 
 
 loader(); // do not remove this!
@@ -40,6 +39,12 @@ function App() {
   const drawerWidth = 240;
   const navItems = ['Inbox', 'Trash'];
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mailOpen, setMailOpen] = React.useState({
+    load: 'none',
+    from: '',
+    subject: '',
+    address: '',
+  });
   const [inboxOpen, setInboxOpen] = React.useState('inbox');
   const [inboxName, setInboxName] = React.useState('Inbox');
 
@@ -54,6 +59,16 @@ function App() {
     } else {
       setInboxOpen('inbox');
       setInboxName('Inbox');
+    }
+  };
+
+  const handleMailOpen = (contF, contS, contA) => {
+    if (mailOpen.load === 'none') {
+      setMailOpen({load: 'block', from: contF, subject: contS,
+      address: contA});
+    } else {
+      setMailOpen({load: 'none', from: '', subject: '',
+      address: ''});
     }
   };
 
@@ -157,8 +172,11 @@ function App() {
               <List key={email.id}>
                 <ListItemButton
                   sx={{marginTop: 4}}
-                  onClick={handleDrawerToggle}>
-                  {email.from.name} {email.subject}</ListItemButton>
+                  aria-label={email.from.name + ' ' + email.subject}
+                  onClick={() => handleMailOpen(email.from.name,
+                  email.subject, email.from.address)}>
+                  {email.from.name}</ListItemButton>
+                <ListItem>{email.subject}</ListItem>
                 <ListItem>{handleRecieved(email.received)}</ListItem>
                 <ListItem>{email.mailbox}</ListItem>
               </List>
@@ -166,6 +184,42 @@ function App() {
           </Grid>
         </Grid>
       </Box>
+      <AppBar position="fixed" color="primary" sx={{top: 'auto', bottom: 0,
+        display: mailOpen.load}}>
+        <Toolbar>
+        <Typography
+            variant="h6"
+            component="div"
+            sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
+          >
+            Subject: {mailOpen.subject}
+          </Typography>
+          <Button variant="outlined"
+          color='secondary'
+          position='absolute'
+          aria-label='close desktop reader'
+          onClick={() => handleMailOpen(mailOpen.from, mailOpen.subject,
+            mailOpen.address)}
+          sx={{top: 0, right: 0}}
+          >x</Button>
+        </Toolbar>
+        <Box>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
+          >
+            To: App User (user@app.com)
+          </Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{flexGrow: 1, display: {xs: 'none', sm: 'block'}}}
+          >
+            From: {mailOpen.from} ({mailOpen.address})
+          </Typography>
+        </Box>
+      </AppBar>
     </Box>
   );
 }
