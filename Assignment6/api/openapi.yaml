@@ -48,7 +48,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Mail'
+              $ref: '#/components/schemas/PostMail'
       responses:
         201:
           description: Application response
@@ -58,8 +58,6 @@ paths:
                 $ref: '#/components/schemas/Mail'
         400:
           description: Invalid id
-        409:
-          description: Conflict. Requested id in use.
         default:
           description: unexpected error
           content:
@@ -170,6 +168,18 @@ components:
         subject:
           type: string
         received:
+          type: string
+        content:
+          type: string
+
+    PostMail:
+      type: object
+      properties:
+        toName:
+          type: string
+        toEmail:
+          type: string
+        subject:
           type: string
         content:
           type: string
