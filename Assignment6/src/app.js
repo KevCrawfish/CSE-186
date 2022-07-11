@@ -24,10 +24,10 @@ app.use(
   }),
 );
 
-// Your routes go here 
-app.get('/v0/mail',     mail.getAll);
+// Your routes go here
+app.get('/v0/mail', mail.getAll);
 app.get('/v0/mail/:id', mail.getByID);
-app.post('/v0/mail',    mail.post);
+app.post('/v0/mail', mail.post);
 app.put('/v0/mail/:id', mail.put);
 
 app.use((err, req, res, next) => {
@@ -35,7 +35,7 @@ app.use((err, req, res, next) => {
     message: err.message,
     errors: err.errors,
     status: err.status,
-  }); 
+  });
 });
 
 module.exports = app;
