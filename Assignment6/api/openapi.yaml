@@ -94,6 +94,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    put: 
+      description: moves a single mail
+      parameters:
+      - name: mailbox
+        in: query
+        description: mailbox name
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of mail
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: move success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        400:
+          description: Invalid id
+        404:
+          description: Invalid id
+        409:
+          description: Already in sent
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:

@@ -5,6 +5,10 @@ const v4 = require('uuid');
 // https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j
 const uuid = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
 
+/**
+ * todo:
+ * exclude content from return
+ */
 exports.getAll = async (req, res) => {
     fs.readdir('./data/', (err, files) => {
         if (err) {
@@ -53,6 +57,11 @@ exports.getByID = async (req, res) => {
     });
 }
 
+/**
+ * todo:
+ * exclude id, received, from-name, from-email from submission
+ * ensure that req.body has expected properties
+ */
 exports.post = async (req, res) => {
     const send = require('../data/sent.json');
     const date = new Date();
@@ -65,8 +74,39 @@ exports.post = async (req, res) => {
             req.body.fromName = "CSE183 Student";
             req.body.fromEmail = "cse183-student@ucsc.edu";
             req.body.received = date.toISOString();
+            sent.push(req.body);
             res.status(201).send(req.body);
         }
+    } else {
+        res.status(400).send();
+    }
+}
+
+/**
+ * todo: deleting and appending 
+ */
+exports.put = async (req, res) => {
+    if (req.params.id.match(uuid)) {
+        fs.readdir('./data/', (err, files) => {
+            if (err) {
+                return console.log('err');
+            } 
+    
+            files.forEach(file => {
+                const f = require('../data/' + file);
+                const mail = f.find(mail => mail.id == req.params.id);
+                if (mail) {
+                    files.forEach(file => {
+                        const name = file.match(/.+(?=\.)/);
+                        if (name == req.query.mailbox) {
+                            // move from old to new
+                        }
+                    });
+                    // create new mailbox and move from old to new
+                }
+            });
+            res.status(404).send();
+        });
     } else {
         res.status(400).send();
     }
