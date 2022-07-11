@@ -15,7 +15,13 @@ servers:
 paths:
   /v0/mail:
     get:
-      description: Returns all e-mails
+      parameters:
+        - in: query
+          name: mailbox
+          description: mailbox name
+          schema: 
+            type: string 
+      description: Returns e-mails
       responses:
         200:
           description: Emails Response

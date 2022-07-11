@@ -10,8 +10,24 @@ exports.getAll = async (req, res) => {
             return console.log('err');
         } 
 
+        let arr = [];
+        if(req.query.mailbox !== undefined) {
+            files.forEach(file => {
+                const f = require('../data/' + file);
+                const name = file.match(/.+(?=\.)/);
+                if (req.query.mailbox == name) {
+                    arr.push({name: String(name), mail: f});
+                    return res.status(200).json(arr);
+                }
+            });
+            return res.status(404).send();
+        }
         files.forEach(file => {
+            const f = require('../data/' + file);
+            const name = file.match(/.+(?=\.)/);
+            arr.push({name: String(name), mail: f});
         });
+        res.status(200).json(arr);
     });
 }
 
