@@ -25,8 +25,9 @@ app.use(
 );
 
 // Your routes go here 
-app.get('/v0/mail', mail.getAll);
+app.get('/v0/mail',     mail.getAll);
 app.get('/v0/mail/:id', mail.getByID);
+app.post('/v0/mail',    mail.post);
 
 app.use((err, req, res, next) => {
   res.status(err.status).json({

@@ -39,6 +39,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
+    post:
+      description: Creates a new mail
+      requestBody:
+        description: Application to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        201:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        400:
+          description: Invalid id
+        409:
+          description: Conflict. Requested id in use.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v0/mail/{id}:
     get:
       description: Returns a single mail
@@ -97,13 +125,13 @@ components:
       properties:
         id:
           type: string
-        to-name:
+        toName:
           type: string
-        to-email:
+        toEmail:
           type: string
-        from-name:
+        fromName:
           type: string
-        from-email:
+        fromEmail:
           type: string
         subject:
           type: string
@@ -111,11 +139,3 @@ components:
           type: string
         content:
           type: string
-      required:
-        - id
-        - to-name
-        - to-email
-        - from-name
-        - from-email
-        - subject
-        - received
