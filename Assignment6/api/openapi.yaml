@@ -15,9 +15,101 @@ servers:
 paths:
   /v0/mail:
     get:
-      description: Returns all EMail
+      description: Returns all e-mails
       responses:
         200:
-          description: Email Response
+          description: Emails Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailResponse'
         404:
-          description: Not Found 
+          description: Not Found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v0/mail/{id}:
+    get:
+      description: Returns a single mail
+      parameters:
+      - name: id
+        in: path
+        description: id of mail
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Mail found
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Mail'
+        400:
+          description: Invalid id
+        404:
+          description: Mail not found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    
+    EmailResponse:
+      properties:
+        name:
+          type: string
+        mail:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mail'
+      required:
+        - name
+        - mail
+  
+    Mail:
+      type: object
+      properties:
+        id:
+          type: string
+        to-name:
+          type: string
+        to-email:
+          type: string
+        from-name:
+          type: string
+        from-email:
+          type: string
+        subject:
+          type: string
+        received:
+          type: string
+        content:
+          type: string
+      required:
+        - id
+        - to-name
+        - to-email
+        - from-name
+        - from-email
+        - subject
+        - received
