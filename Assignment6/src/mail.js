@@ -28,14 +28,15 @@ exports.getAll = async (req, res) => {
         }
       });
       return res.status(404).send();
+    } else {
+      files.forEach((file) => {
+        let f = require('../data/' + file);
+        const name = file.match(/.+(?=\.)/);
+        f = f.map(({content, ...cont}) => cont);
+        arr.push({name: String(name), mail: f});
+      });
+      return res.status(200).json(arr);
     }
-    files.forEach((file) => {
-      let f = require('../data/' + file);
-      const name = file.match(/.+(?=\.)/);
-      f = f.map(({content, ...cont}) => cont);
-      arr.push({name: String(name), mail: f});
-    });
-    return res.status(200).json(arr);
   });
 };
 
@@ -96,8 +97,7 @@ exports.post = async (req, res) => {
 };
 
 /**
- * todo:
- * delete from old
+ *
  * @param {req} req
  * @param {res} res
  */
@@ -111,38 +111,57 @@ exports.put = async (req, res) => {
       const f = require('../data/' + file);
       if (req.params.id.match(uuid)) {
         const mail = f.find((mail) => mail.id == req.params.id);
+        const mailIndex = f.find((mail) => mail.id == req.params.id);
         if (mail) {
           const name = file.match(/.+(?=\.)/);
+          let flag = 0;
           if (req.query.mailbox == 'sent' && name != 'sent') {
             return res.status(409).send();
           }
+          fs.readFile('data/' + file,
+            (err, data) => {
+              if (err) {
+                return res.status().send();
+              }
+              const json = JSON.parse(data);
+              json.splice(mailIndex, 1);
+              fs.writeFile('data/' + file,
+                JSON.stringify(json), (err) => {
+                  if (err) {
+                    return res.status().send();
+                  }
+                });
+            });
           files.forEach((file) => {
             const name = file.match(/.+(?=\.)/);
             if (name == req.query.mailbox) {
               fs.readFile('data/' + req.query.mailbox + '.json',
                 (err, data) => {
                   if (err) {
-                    res.status().send();
+                    return res.status().send();
                   }
                   const json = JSON.parse(data);
                   json.push(mail);
                   fs.writeFile('data/' + req.query.mailbox + '.json',
                     JSON.stringify(json), (err) => {
                       if (err) {
-                        res.status().send();
+                        return res.status().send();
                       }
                     });
                 });
+              flag = 1;
               return res.status(204).send();
             }
           });
-          fs.writeFile('data/' + req.query.mailbox + '.json',
-            '[' + JSON.stringify(mail) + ']', (err) => {
-              if (err) {
-                res.status().send();
-              }
-            });
-          return res.status(204).send();
+          if (flag === 0) {
+            fs.writeFile('data/' + req.query.mailbox + '.json',
+              '[' + JSON.stringify(mail) + ']', (err) => {
+                if (err) {
+                  return res.status().send();
+                }
+              });
+            return res.status(204).send();
+          }
         }
       } else {
         return res.status(400).send();
