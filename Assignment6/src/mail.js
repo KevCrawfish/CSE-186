@@ -66,13 +66,10 @@ exports.getByID = async (req, res) => {
 };
 
 /**
- * todo:
- * save to file
  * @param {req} req
  * @param {res} res
  */
 exports.post = async (req, res) => {
-  const send = JSON.parse(fs.readFileSync('data/sent.json'));
   const date = new Date();
   id = v4.v4();
   if (id.match(uuid)) {
@@ -80,7 +77,18 @@ exports.post = async (req, res) => {
     req.body.fromName = 'CSE183 Student',
     req.body.fromEmail = 'cse183-student@ucsc.edu',
     req.body.received = date.toISOString();
-    send.push(req.body);
+    fs.readFile('data/sent.json', (err, data) => {
+      if (err) {
+        res.status().send();
+      }
+      const json = JSON.parse(data);
+      json.push(req.body);
+      fs.writeFile('data/sent.json', JSON.stringify(json), (err) => {
+        if (err) {
+          res.status().send();
+        }
+      });
+    });
     res.status(201).send(req.body);
   } else {
     return res.status(400).send();
@@ -113,7 +121,8 @@ exports.put = async (req, res) => {
           files.forEach((file) => {
             const name = file.match(/.+(?=\.)/);
             if (name == req.query.mailbox) {
-              const m = require('../data/' + file);
+              const m = JSON.parse(fs.readFileSync('data/' + file));
+              m.push(mail);
               return res.status(204).send();
             }
           });
