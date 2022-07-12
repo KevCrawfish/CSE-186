@@ -97,9 +97,7 @@ exports.post = async (req, res) => {
 
 /**
  * todo:
- * move from old to new
- * create new mailbox and move from old to new
- * save to file
+ * delete from old
  * @param {req} req
  * @param {res} res
  */
@@ -118,7 +116,33 @@ exports.put = async (req, res) => {
           if (req.query.mailbox == 'sent' && name != 'sent') {
             return res.status(409).send();
           }
-          return res.status(204).json(mail);
+          files.forEach((file) => {
+            const name = file.match(/.+(?=\.)/);
+            if (name == req.query.mailbox) {
+              fs.readFile('data/' + req.query.mailbox + '.json',
+                (err, data) => {
+                  if (err) {
+                    res.status().send();
+                  }
+                  const json = JSON.parse(data);
+                  json.push(mail);
+                  fs.writeFile('data/' + req.query.mailbox + '.json',
+                    JSON.stringify(json), (err) => {
+                      if (err) {
+                        res.status().send();
+                      }
+                    });
+                });
+              return res.status(204).send();
+            }
+          });
+          fs.writeFile('data/' + req.query.mailbox + '.json',
+            '[' + JSON.stringify(mail) + ']', (err) => {
+              if (err) {
+                res.status().send();
+              }
+            });
+          return res.status(204).send();
         }
       } else {
         return res.status(400).send();

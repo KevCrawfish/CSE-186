@@ -110,10 +110,6 @@ paths:
       responses:
         204:
           description: move success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Mail'
         400:
           description: Invalid id
         404:
