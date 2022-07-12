@@ -12,10 +12,6 @@ const uuid = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-' +
  */
 exports.getAll = async (req, res) => {
   fs.readdir('./data/', (err, files) => {
-    if (err) {
-      return res.status().send();
-    }
-
     const arr = [];
     if (req.query.mailbox !== undefined) {
       files.forEach((file) => {
@@ -47,10 +43,6 @@ exports.getAll = async (req, res) => {
  */
 exports.getByID = async (req, res) => {
   fs.readdir('./data/', (err, files) => {
-    if (err) {
-      return res.status().send();
-    }
-
     files.forEach((file) => {
       const f = require('../data/' + file);
       if (req.params.id.match(uuid)) {
@@ -73,21 +65,15 @@ exports.getByID = async (req, res) => {
 exports.post = async (req, res) => {
   const date = new Date();
   id = v4.v4();
-  if (id.match(uuid)) {
+  if (req.body.toName !== undefined) {
     req.body.id = id;
     req.body.fromName = 'CSE183 Student',
     req.body.fromEmail = 'cse183-student@ucsc.edu',
     req.body.received = date.toISOString();
     fs.readFile('data/sent.json', (err, data) => {
-      if (err) {
-        res.status().send();
-      }
       const json = JSON.parse(data);
       json.push(req.body);
       fs.writeFile('data/sent.json', JSON.stringify(json), (err) => {
-        if (err) {
-          res.status().send();
-        }
       });
     });
     res.status(201).send(req.body);
@@ -103,10 +89,6 @@ exports.post = async (req, res) => {
  */
 exports.put = async (req, res) => {
   fs.readdir('./data/', (err, files) => {
-    if (err) {
-      return res.status().send();
-    }
-
     files.forEach((file) => {
       const f = require('../data/' + file);
       if (req.params.id.match(uuid)) {
@@ -120,16 +102,10 @@ exports.put = async (req, res) => {
           }
           fs.readFile('data/' + file,
             (err, data) => {
-              if (err) {
-                return res.status().send();
-              }
               const json = JSON.parse(data);
               json.splice(mailIndex, 1);
               fs.writeFile('data/' + file,
                 JSON.stringify(json), (err) => {
-                  if (err) {
-                    return res.status().send();
-                  }
                 });
             });
           files.forEach((file) => {
@@ -137,16 +113,10 @@ exports.put = async (req, res) => {
             if (name == req.query.mailbox) {
               fs.readFile('data/' + req.query.mailbox + '.json',
                 (err, data) => {
-                  if (err) {
-                    return res.status().send();
-                  }
                   const json = JSON.parse(data);
                   json.push(mail);
                   fs.writeFile('data/' + req.query.mailbox + '.json',
                     JSON.stringify(json), (err) => {
-                      if (err) {
-                        return res.status().send();
-                      }
                     });
                 });
               flag = 1;
@@ -154,12 +124,8 @@ exports.put = async (req, res) => {
             }
           });
           if (flag === 0) {
-            fs.writeFile('data/' + req.query.mailbox + '.json',
-              '[' + JSON.stringify(mail) + ']', (err) => {
-                if (err) {
-                  return res.status().send();
-                }
-              });
+            fs.promises.writeFile('data/' + req.query.mailbox + '.json',
+              '[' + JSON.stringify(mail) + ']');
             return res.status(204).send();
           }
         }
