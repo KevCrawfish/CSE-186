@@ -147,7 +147,7 @@ components:
         mail:
           type: array
           items:
-            $ref: '#/components/schemas/Mail'
+            $ref: '#/components/schemas/NoContMail'
       required:
         - name
         - mail
@@ -182,4 +182,22 @@ components:
         subject:
           type: string
         content:
+          type: string
+
+    NoContMail:
+      type: object
+      properties:
+        id:
+          type: string
+        toName:
+          type: string
+        toEmail:
+          type: string
+        fromName:
+          type: string
+        fromEmail:
+          type: string
+        subject:
+          type: string
+        received:
           type: string

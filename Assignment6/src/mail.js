@@ -7,7 +7,6 @@ const uuid = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-' +
              '[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
 
 /**
- * todo:
  * @param {req} req
  * @param {res} res
  */
@@ -73,7 +72,7 @@ exports.getByID = async (req, res) => {
  * @param {res} res
  */
 exports.post = async (req, res) => {
-  const send = require('../data/sent.json');
+  const send = JSON.parse(fs.readFileSync('data/sent.json'));
   const date = new Date();
   id = v4.v4();
   if (id.match(uuid)) {
@@ -107,16 +106,14 @@ exports.put = async (req, res) => {
         const f = require('../data/' + file);
         const name = file.match(/.+(?=\.)/);
         const mail = f.find((mail) => mail.id == req.params.id);
-        const mailIndex = f.findIndex((mail) => mail.id == req.params.id);
         if (mail) {
-          if (name == 'sent' && req.query.mailbox !== 'sent') {
+          if (name != 'sent' && req.query.mailbox == 'sent') {
             return res.status(409).send();
           }
           files.forEach((file) => {
             const name = file.match(/.+(?=\.)/);
             if (name == req.query.mailbox) {
-              let m = require('../data/' + req.query.mailbox);
-              f.splice(mailIndex, 1)[0];
+              const m = require('../data/' + file);
               return res.status(204).send();
             }
           });
