@@ -104,38 +104,26 @@ exports.post = async (req, res) => {
  * @param {res} res
  */
 exports.put = async (req, res) => {
-  if (req.params.id.match(uuid)) {
-    fs.readdir('./data/', (err, files) => {
-      if (err) {
-        return res.status().send();
-      }
+  fs.readdir('./data/', (err, files) => {
+    if (err) {
+      return res.status().send();
+    }
 
-      files.forEach((file) => {
-        const f = require('../data/' + file);
-        const name = file.match(/.+(?=\.)/);
+    files.forEach((file) => {
+      const f = require('../data/' + file);
+      if (req.params.id.match(uuid)) {
         const mail = f.find((mail) => mail.id == req.params.id);
         if (mail) {
-          if (name != 'sent' && req.query.mailbox == 'sent') {
+          const name = file.match(/.+(?=\.)/);
+          if (req.query.mailbox == 'sent' && name != 'sent') {
             return res.status(409).send();
           }
-          files.forEach((file) => {
-            const name = file.match(/.+(?=\.)/);
-            if (name == req.query.mailbox) {
-              return res.status(204).send();
-            }
-          });
-          fs.writeFile('data/' + req.query.mailbox + '.json',
-          '[' + JSON.stringify(mail) + ']', (err) => {
-            if (err) {
-                res.status().send();
-            }
-          });
-          return res.status(204).send();
+          return res.status(204).json(mail);
         }
-      });
-      return res.status(404).send();
+      } else {
+        return res.status(400).send();
+      }
     });
-  } else {
-    return res.status(400).send();
-  }
+    return res.status(404).send();
+  });
 };
