@@ -121,12 +121,16 @@ exports.put = async (req, res) => {
           files.forEach((file) => {
             const name = file.match(/.+(?=\.)/);
             if (name == req.query.mailbox) {
-              const m = JSON.parse(fs.readFileSync('data/' + file));
-              m.push(mail);
               return res.status(204).send();
             }
           });
-          // make new mail
+          fs.writeFile('data/' + req.query.mailbox + '.json',
+          '[' + JSON.stringify(mail) + ']', (err) => {
+            if (err) {
+                res.status().send();
+            }
+          });
+          return res.status(204).send();
         }
       });
       return res.status(404).send();
