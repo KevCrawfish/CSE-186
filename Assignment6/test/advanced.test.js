@@ -73,7 +73,16 @@ test('POST bad', async () => {
 });
 
 test('GET id', async () => {
-  await request.get('/v0/mail/591b428e-1b99-4a56-b653-dab17210b3b7')
+  let id = 0;
+  await request.get('/v0/mail?mailbox=inbox')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .then((data) => {
+      expect(data).toBeDefined();
+      expect(data.body).toBeDefined();
+      return id = data.body[0].mail[0].id;
+    });
+  await request.get('/v0/mail/' + id)
     .expect(200)
     .expect('Content-Type', /json/)
     .then((data) => {
@@ -93,14 +102,32 @@ test('GET unknown id', async () => {
 });
 
 test('PUT regular', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=inbox')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .then((data) => {
+      expect(data).toBeDefined();
+      expect(data.body).toBeDefined();
+      return id = data.body[0].mail[0].id;
+    });
   await request.put(
-    '/v0/mail/591b428e-1b99-4a56-b653-dab17210b3b7?mailbox=trash')
+    '/v0/mail/' + id + '?mailbox=trash')
     .expect(204);
 });
 
 test('PUT to sent', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=inbox')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .then((data) => {
+      expect(data).toBeDefined();
+      expect(data.body).toBeDefined();
+      return id = data.body[0].mail[0].id;
+    });
   await request.put(
-    '/v0/mail/591b428e-1b99-4a56-b653-dab17210b3b7?mailbox=sent')
+    '/v0/mail/' + id + '?mailbox=sent')
     .expect(409);
 });
 
@@ -117,7 +144,16 @@ test('PUT id not found', async () => {
 });
 
 test('PUT new mailbox', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=inbox')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .then((data) => {
+      expect(data).toBeDefined();
+      expect(data.body).toBeDefined();
+      return id = data.body[0].mail[0].id;
+    });
   await request.put(
-    '/v0/mail/df49393d-1dc1-416c-bf71-f7cf7a1a1ec5?mailbox=test')
+    '/v0/mail/' + id + '?mailbox=test')
     .expect(204);
 });
