@@ -11,14 +11,26 @@ const pool = new Pool({
   password: process.env.POSTGRES_PASSWORD,
 });
 
-selectMails = async (box) => {
+selectMails = async (req) => {
   let select = 'SELECT * FROM mail';
-  if (box) {
-    select += ` WHERE mailbox ~* $1`
+  let value = [ ];
+  if (req.query.mailbox && req.query.from) {
+    select += ` WHERE mailbox ~* $1`;
+    select += ` AND mail->'from'->>'email' ~* $2`;
+    select += ` OR mailbox ~* $1`;
+    select += ` AND mail->'from'->>'name' ~* $2`;
+    value = [ `${req.query.mailbox}`, `${req.query.from}`];
+  } else if (req.query.mailbox) {
+    select += ` WHERE mailbox ~* $1`;
+    value = [ `${req.query.mailbox}` ];
+  } else if (req.query.from) {
+    select += ` WHERE mail->'from'->>'email' ~* $1`;
+    select += ` OR mail->'from'->>'name' ~* $1`;
+    value = [ `${req.query.from}`];
   }
   const query = {
     text: select,
-    values: box ? [ `${box}` ] : [ ]
+    values: value
   };
   let { rows } = await pool.query(query);
   const mails = [];
@@ -30,8 +42,12 @@ selectMails = async (box) => {
 }
 
 exports.getAll = async (req, res) => {
-  const mail = await selectMails(req.query.mailbox);
-  res.status(200).json(mail);
+  const mail = await selectMails(req);
+  if (mail.length !== 0) {
+    res.status(200).json(mail);
+  } else {
+    res.status(404).send();
+  }
 };
 
 exports.getById = async (req, res) => {

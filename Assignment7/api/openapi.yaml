@@ -21,6 +21,11 @@ paths:
           description: mailbox name
           schema: 
             type: string 
+        - in: query
+          name: from
+          description: from name
+          schema: 
+            type: string 
       description: Returns e-mails
       responses:
         200:
