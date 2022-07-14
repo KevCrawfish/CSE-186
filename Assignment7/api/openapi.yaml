@@ -43,6 +43,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /v0/mail/{id}:
+    get:
+      description: Returns a single mail
+      parameters:
+      - name: id
+        in: path
+        description: id of mail
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Mail found
+          content:
+            application/json:
+              schema:
+                type: object 
+                $ref: '#/components/schemas/Email'
+        400:
+          description: Invalid id
+        404:
+          description: Mail not found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -65,6 +93,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NoContMail'
+        id:
+          type: string
+      required:
+        - name
+        - mail
+
+    Email:
+      properties:
+        name:
+          type: string
+        mail:
+          type: object
+          items:
+            $ref: '#/components/schemas/NoContMail'
+        id:
+          type: string
       required:
         - name
         - mail
