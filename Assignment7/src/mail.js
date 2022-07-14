@@ -78,9 +78,56 @@ exports.getById = async (req, res) => {
   }
 };
 
+insertMail = async (Mail) => {
+  const insert = 'INSERT INTO mail(mailbox, mail) VALUES ($1, $2)';
+  const query = {
+    text: insert,
+    values: ['sent', Mail],
+  };
+  await pool.query(query);
+};
+
 exports.post = async (req, res) => {
+  if (req.body) {
+    const date = new Date();
+    req.body.from = {name: 'CSE186 Student',
+      email: 'CSE186student@ucsc.edu'};
+    // https://stackoverflow.com/questions/34053715/how-to-output-date-in-javascript-in-iso-8601-without-milliseconds-and-with-z
+    req.body.received = date.toISOString().slice(0, -5)+'Z';
+    req.body.sent = date.toISOString().slice(0, -5)+'Z';
+    await insertMail(req.body);
+    res.status(201).send(req.body);
+  } else {
+    return res.status(400).send();
+  }
+};
+
+moveMail = async (req) => {
+  const update = 'UPDATE mail SET mailbox = $1 WHERE id = $2';
+  const query = {
+    text: update,
+    values: [ `${req.query.mailbox}` , `${req.params.id}` ],
+  };
+  return await pool.query(query);
 };
 
 exports.put = async (req, res) => {
+  if (req.params.id.match(uuid)) {
+    const target = await selectMail(req.params.id);
+    if (target) {
+      if (target.mailbox != 'sent' && req.query.mailbox == 'sent') {
+        res.status(409).send();
+      } else {
+        const mail = await moveMail(req);
+        if (mail) {
+          res.status(204).send();
+        }
+      }
+    } else {
+      res.status(404).send();
+    }
+  } else {
+    res.status(400).send();
+  }
 };
 
