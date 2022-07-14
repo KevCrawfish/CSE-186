@@ -17,13 +17,13 @@ selectMails = async (req) => {
   let select = 'SELECT * FROM mail';
   let value = [];
   if (req.query.mailbox && req.query.from) {
-    select += ` WHERE mailbox ~* $1`;
+    select += ` WHERE mailbox = $1`;
     select += ` AND mail->'from'->>'email' ~* $2`;
-    select += ` OR mailbox ~* $1`;
+    select += ` OR mailbox = $1`;
     select += ` AND mail->'from'->>'name' ~* $2`;
     value = [`${req.query.mailbox}`, `${req.query.from}`];
   } else if (req.query.mailbox) {
-    select += ` WHERE mailbox ~* $1`;
+    select += ` WHERE mailbox = $1`;
     value = [`${req.query.mailbox}`];
   } else if (req.query.from) {
     select += ` WHERE mail->'from'->>'email' ~* $1`;
@@ -37,10 +37,19 @@ selectMails = async (req) => {
   const {rows} = await pool.query(query);
   const mails = [];
   for (const row of rows) {
+    row.mail.id = row.id;
     const {content, ...cont} = row.mail;
     if (content) {} // lint
-    mails.push({name: row.mailbox, id: row.id, mail: cont});
+    if (mails.find((element) => element.name == row.mailbox)) {
+      const find = mails.find((element) => element.name == row.mailbox);
+      find.mail.push(cont);
+    } else {
+      mails.push({name: row.mailbox, mail: []});
+      const find = mails.find((element) => element.name == row.mailbox);
+      find.mail.push(cont);
+    }
   }
+
   return mails;
 };
 
@@ -106,7 +115,7 @@ moveMail = async (req) => {
   const update = 'UPDATE mail SET mailbox = $1 WHERE id = $2';
   const query = {
     text: update,
-    values: [ `${req.query.mailbox}` , `${req.params.id}` ],
+    values: [`${req.query.mailbox}`, `${req.params.id}`],
   };
   return await pool.query(query);
 };
