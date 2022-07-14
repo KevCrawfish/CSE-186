@@ -20,10 +20,11 @@ selectMails = async (box) => {
     text: select,
     values: box ? [ `${box}` ] : [ ]
   };
-  const { rows } = await pool.query(query);
+  let { rows } = await pool.query(query);
   const mails = [];
   for (const row of rows) {
-    mails.push({name: row.mailbox, mail: row.mail});
+    const {content, ...cont} = row.mail;
+    mails.push({name: row.mailbox, mail: cont});
   }
   return mails;
 }
