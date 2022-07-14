@@ -16,6 +16,8 @@ const fs = require('fs');
 const path = require('path');
 const OpenApiValidator = require('express-openapi-validator');
 
+const mail = require('./mail');
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -34,6 +36,10 @@ app.use(
 );
 
 // Your routes go here - write them in a new component in it's own .js file
+app.get('/v0/mail', mail.getAll);
+app.get('/v0/mail/:id', mail.getById);
+app.post('/v0/mail', mail.post);
+app.put('/v0/mail/:id', mail.put);
 
 app.use((err, req, res, next) => {
   res.status(err.status).json({
