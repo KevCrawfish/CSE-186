@@ -88,12 +88,14 @@ exports.getById = async (req, res) => {
 };
 
 insertMail = async (Mail) => {
-  const insert = 'INSERT INTO mail(mailbox, mail) VALUES ($1, $2)';
+  let insert = 'INSERT INTO mail(mailbox, mail) VALUES ($1, $2)';
+  insert += ' RETURNING id';
   const query = {
     text: insert,
     values: ['sent', Mail],
   };
-  await pool.query(query);
+  const id = await pool.query(query);
+  Mail.id = id.rows[0].id;
 };
 
 exports.post = async (req, res) => {

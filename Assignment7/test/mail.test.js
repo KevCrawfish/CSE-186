@@ -112,10 +112,11 @@ test('POST new', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        expect(data.body.from).toBeDefined();
+        expect(data.body.from).toEqual({name: 'CSE186 Student',
+          email: 'CSE186student@ucsc.edu'});
         expect(data.body.received).toBeDefined();
         expect(data.body.sent).toBeDefined();
-        expect(data.body.to).toBeDefined();
+        expect(data.body.to).toEqual(mail.to);
         expect(data.body.subject).toEqual(mail.subject);
         expect(data.body.content).toEqual(mail.content);
       });
@@ -169,5 +170,180 @@ test('PUT bad id', async () => {
       '/v0/mail/' +
       '23 is number one' + '?mailbox=sent')
       .expect(400);
+});
+
+test('GET sent after POST', async () => {
+  let id = 0;
+  await request.post('/v0/mail/')
+      .send(mail)
+      .expect(201)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(data.body.from).toEqual({name: 'CSE186 Student',
+          email: 'CSE186student@ucsc.edu'});
+        expect(data.body.received).toBeDefined();
+        expect(data.body.sent).toBeDefined();
+        expect(data.body.to).toEqual(mail.to);
+        expect(data.body.subject).toEqual(mail.subject);
+        expect(data.body.content).toEqual(mail.content);
+        expect(data.body.id).toBeDefined();
+        id = data.body.id;
+      });
+  await request.get('/v0/mail?mailbox=sent')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].from,
+        ).toEqual({name: 'CSE186 Student',
+          email: 'CSE186student@ucsc.edu'});
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].received,
+        ).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].sent,
+        ).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].to,
+        ).toEqual(mail.to);
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].subject,
+        ).toEqual(mail.subject);
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].id,
+        ).toEqual(id);
+      });
+});
+
+test('GET id after POST', async () => {
+  let id = 0;
+  await request.post('/v0/mail/')
+      .send(mail)
+      .expect(201)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(data.body.from).toEqual({name: 'CSE186 Student',
+          email: 'CSE186student@ucsc.edu'});
+        expect(data.body.received).toBeDefined();
+        expect(data.body.sent).toBeDefined();
+        expect(data.body.to).toEqual(mail.to);
+        expect(data.body.subject).toEqual(mail.subject);
+        expect(data.body.content).toEqual(mail.content);
+        expect(data.body.id).toBeDefined();
+        id = data.body.id;
+      });
+  await request.get('/v0/mail/' + id)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(
+            data.body.mail.from,
+        ).toEqual({name: 'CSE186 Student',
+          email: 'CSE186student@ucsc.edu'});
+        expect(
+            data.body.mail.received,
+        ).toBeDefined();
+        expect(
+            data.body.mail.sent,
+        ).toBeDefined();
+        expect(
+            data.body.mail.to,
+        ).toEqual(mail.to);
+        expect(
+            data.body.mail.subject,
+        ).toEqual(mail.subject);
+        expect(
+            data.body.mail.content,
+        ).toEqual(mail.content);
+        expect(
+            data.body.id,
+        ).toEqual(id);
+      });
+});
+
+test('GET Trash after PUT', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=inbox')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        return id = data.body[0].mail[0].id;
+      });
+  await request.put(
+      '/v0/mail/' + id + '?mailbox=trash')
+      .expect(204);
+  await request.get('/v0/mail?mailbox=trash')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].id,
+        ).toEqual(id);
+      });
+});
+
+test('GET New Mailbox after PUT', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=trash')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        return id = data.body[0].mail[0].id;
+      });
+  await request.put(
+      '/v0/mail/' + id + '?mailbox=epic mail')
+      .expect(204);
+  await request.get('/v0/mail?mailbox=epic mail')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].id,
+        ).toEqual(id);
+      });
+});
+
+test('GET Inbox after PUT', async () => {
+  let id = 0;
+  await request.get('/v0/mail?mailbox=epic mail')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        return id = data.body[0].mail[0].id;
+      });
+  await request.put(
+      '/v0/mail/' + id + '?mailbox=inbox')
+      .expect(204);
+  await request.get('/v0/mail?mailbox=inbox')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then((data) => {
+        expect(data).toBeDefined();
+        expect(data.body).toBeDefined();
+        expect(
+            data.body[0].mail[data.body[0].mail.length - 1].id,
+        ).toEqual(id);
+      });
+});
+
+test('GET empty mailbox', async () => {
+  await request.get('/v0/mail?mailbox=epic mail')
+      .expect(404);
 });
 
