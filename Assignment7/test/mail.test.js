@@ -89,7 +89,7 @@ test('GET by id', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.get('/v0/mail/' + id)
       .expect(200)
@@ -158,7 +158,7 @@ test('PUT regular', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.put(
       '/v0/mail/' + id + '?mailbox=trash')
@@ -173,7 +173,7 @@ test('PUT into sent', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.put(
       '/v0/mail/' + id + '?mailbox=sent')
@@ -283,7 +283,7 @@ test('GET Trash after PUT', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.put(
       '/v0/mail/' + id + '?mailbox=trash')
@@ -308,7 +308,7 @@ test('GET New Mailbox after PUT', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.put(
       '/v0/mail/' + id + '?mailbox=epic mail')
@@ -333,7 +333,7 @@ test('GET Inbox after PUT', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        return id = data.body[0].mail[0].id;
+        id = data.body[0].mail[0].id;
       });
   await request.put(
       '/v0/mail/' + id + '?mailbox=inbox')
