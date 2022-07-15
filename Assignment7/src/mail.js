@@ -69,9 +69,8 @@ selectMail = async (id) => {
     values: [id],
   };
   const {rows} = await pool.query(query);
-  return rows.length == 1 ?
-    ({name: rows[0].mailbox, id: rows[0].id, mail: rows[0].mail}) :
-       undefined;
+  rows.length == 1 ? rows[0].mail.id = rows[0].id : undefined;
+  return rows.length == 1 ? rows[0].mail : undefined;
 };
 
 exports.getById = async (req, res) => {

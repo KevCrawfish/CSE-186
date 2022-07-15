@@ -29,6 +29,9 @@ test('GET All', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
+        expect(data.body[0].name).toBeDefined();
+        expect(data.body[0].mail).toBeDefined();
+        expect(data.body[0].mail[0].content).toBeUndefined();
       });
 });
 
@@ -39,26 +42,37 @@ test('GET inbox', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
+        expect(data.body[0].name).toEqual('inbox');
+        expect(data.body[0].mail).toBeDefined();
+        expect(data.body[0].mail[0].content).toBeUndefined();
       });
 });
 
 test('GET inbox and from', async () => {
-  await request.get('/v0/mail?mailbox=inbox&from=a')
+  await request.get('/v0/mail?mailbox=inbox&from=e')
       .expect(200)
       .expect('Content-Type', /json/)
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
+        expect(data.body[0].name).toEqual('inbox');
+        expect(data.body[0].mail).toBeDefined();
+        expect(data.body[0].mail[0].from.name ||
+          data.body[0].mail[0].from.email).toMatch(/[e]/);
+        expect(data.body[0].mail[0].content).toBeUndefined();
       });
 });
 
 test('GET from', async () => {
-  await request.get('/v0/mail?from=a')
+  await request.get('/v0/mail?from=john')
       .expect(200)
       .expect('Content-Type', /json/)
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
+        expect(data.body[0].mail[0].from.name ||
+          data.body[0].mail[0].from.email).toMatch(/[john]/);
+        expect(data.body[0].mail[0].content).toBeUndefined();
       });
 });
 
@@ -83,6 +97,13 @@ test('GET by id', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
+        expect(data.body.content).toBeDefined();
+        expect(data.body.id).toBeDefined();
+        expect(data.body.from).toBeDefined();
+        expect(data.body.to).toBeDefined();
+        expect(data.body.subject).toBeDefined();
+        expect(data.body.sent).toBeDefined();
+        expect(data.body.received).toBeDefined();
       });
 });
 
@@ -119,6 +140,7 @@ test('POST new', async () => {
         expect(data.body.to).toEqual(mail.to);
         expect(data.body.subject).toEqual(mail.subject);
         expect(data.body.content).toEqual(mail.content);
+        expect(data.body.id).toBeDefined();
       });
 });
 
@@ -242,28 +264,14 @@ test('GET id after POST', async () => {
       .then((data) => {
         expect(data).toBeDefined();
         expect(data.body).toBeDefined();
-        expect(
-            data.body.mail.from,
-        ).toEqual({name: 'CSE186 Student',
+        expect(data.body.from).toEqual({name: 'CSE186 Student',
           email: 'CSE186student@ucsc.edu'});
-        expect(
-            data.body.mail.received,
-        ).toBeDefined();
-        expect(
-            data.body.mail.sent,
-        ).toBeDefined();
-        expect(
-            data.body.mail.to,
-        ).toEqual(mail.to);
-        expect(
-            data.body.mail.subject,
-        ).toEqual(mail.subject);
-        expect(
-            data.body.mail.content,
-        ).toEqual(mail.content);
-        expect(
-            data.body.id,
-        ).toEqual(id);
+        expect(data.body.received).toBeDefined();
+        expect(data.body.sent).toBeDefined();
+        expect(data.body.to).toEqual(mail.to);
+        expect(data.body.subject).toEqual(mail.subject);
+        expect(data.body.content).toEqual(mail.content);
+        expect(data.body.id).toEqual(id);
       });
 });
 
