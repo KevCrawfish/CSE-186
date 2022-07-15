@@ -63,8 +63,8 @@ test('GET inbox and from', async () => {
       });
 });
 
-test('GET from', async () => {
-  await request.get('/v0/mail?from=john')
+test('GET from case insensitive', async () => {
+  await request.get('/v0/mail?from=jOhN')
       .expect(200)
       .expect('Content-Type', /json/)
       .then((data) => {
@@ -124,6 +124,7 @@ const mail = {
 };
 
 const badMail = {
+  subject: 'I\'m a bad mail',
 };
 
 test('POST new', async () => {
@@ -327,7 +328,7 @@ test('GET New Mailbox after PUT', async () => {
 
 test('GET Inbox after PUT', async () => {
   let id = 0;
-  await request.get('/v0/mail?mailbox=epic mail')
+  await request.get('/v0/mail?mailbox=trash')
       .expect(200)
       .expect('Content-Type', /json/)
       .then((data) => {
@@ -351,7 +352,7 @@ test('GET Inbox after PUT', async () => {
 });
 
 test('GET empty mailbox', async () => {
-  await request.get('/v0/mail?mailbox=epic mail')
+  await request.get('/v0/mail?mailbox=fail mail')
       .expect(404);
 });
 
