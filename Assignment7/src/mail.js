@@ -38,8 +38,8 @@ selectMails = async (req) => {
   const mails = [];
   for (const row of rows) {
     row.mail.id = row.id;
-    const {content, ...cont} = row.mail;
-    if (content) {} // lint
+    let {content, ...cont} = row.mail;
+    content = {content}; // lint
     if (mails.find((element) => element.name == row.mailbox)) {
       const find = mails.find((element) => element.name == row.mailbox);
       find.mail.push(cont);
@@ -97,7 +97,9 @@ insertMail = async (Mail) => {
 };
 
 exports.post = async (req, res) => {
-  if (req.body) {
+  if (req.body.to !== undefined &&
+      req.body.subject !== undefined &&
+      req.body.content !== undefined) {
     const date = new Date();
     req.body.from = {name: 'CSE186 Student',
       email: 'CSE186student@ucsc.edu'};
@@ -127,10 +129,8 @@ exports.put = async (req, res) => {
       if (target.mailbox != 'sent' && req.query.mailbox == 'sent') {
         res.status(409).send();
       } else {
-        const mail = await moveMail(req);
-        if (mail) {
-          res.status(204).send();
-        }
+        await moveMail(req);
+        res.status(204).send();
       }
     } else {
       res.status(404).send();

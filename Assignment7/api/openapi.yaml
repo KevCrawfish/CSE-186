@@ -150,8 +150,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Mail'
-        id:
-          type: string
       required:
         - name
         - mail
@@ -180,6 +178,8 @@ components:
         received:
           type: string
         sent:
+          type: string
+        id:
           type: string
 
     PostMail:
