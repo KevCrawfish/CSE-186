@@ -1,7 +1,7 @@
 import React from 'react';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 
-import Dummy from './components/Dummy';
-import Emoji from './components/Emoji';
+import Login from './Login';
 
 /**
  * Simple component with no state.
@@ -11,8 +11,11 @@ import Emoji from './components/Emoji';
 function App() {
   return (
     <div>
-      <Dummy />
-      <Emoji />
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

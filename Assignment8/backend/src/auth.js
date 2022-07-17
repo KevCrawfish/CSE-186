@@ -18,7 +18,7 @@ const selectUser = async (email, password) => {
     values: [`${email}`],
   };
   const {rows} = await pool.query(query);
-  if (rows) {
+  if (rows[0]) {
     return rows[0].email === email &&
     bcrypt.compareSync(password, rows[0].pass) ? rows[0] : undefined;
   } else {
