@@ -23,6 +23,7 @@ CREATE TABLE mailbox (
 DROP TABLE IF EXISTS mail;
 CREATE TABLE mail (
 	id UUID NOT NULL,
+	uqid UUID UNIQUE DEFAULT gen_random_uuid(),
 	mail jsonb,
 	FOREIGN KEY(id)
 		REFERENCES mailbox(id)
