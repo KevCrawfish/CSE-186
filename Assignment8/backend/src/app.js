@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const OpenApiValidator = require('express-openapi-validator');
 
-const dummy = require('./dummy');
 const auth = require('./auth');
 const mail = require('./mail');
 
@@ -28,7 +27,6 @@ app.use(
   }),
 );
 
-app.get('/v0/dummy', dummy.get);
 // Your routes go here
 app.post('/v0/login', auth.login);
 app.get('/v0/mail', auth.check, mail.getAll);

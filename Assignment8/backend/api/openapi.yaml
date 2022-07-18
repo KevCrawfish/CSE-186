@@ -13,23 +13,6 @@ servers:
   - url: http://localhost:3010/v0
 
 paths:
-  /dummy:
-    get:
-      description: Dummy Endpoint
-      responses:
-        200:
-          description: Succesful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DummyResponse'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
   /login:
     post:
       description: Login

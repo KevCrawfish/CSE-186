@@ -1,6 +1,3 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const secrets = require('../data/secrets.json');
 const {Pool} = require('pg');
 
 const pool = new Pool({
@@ -28,7 +25,6 @@ selectMails = async (req) => {
   const {rows} = await pool.query(query);
   const mails = [];
   for (const row of rows) {
-    row.mail.id = row.uqid;
     mails.push({mail: row.mail});
   }
 
