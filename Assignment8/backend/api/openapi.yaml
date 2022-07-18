@@ -56,6 +56,8 @@ paths:
 
   /mail:
     get:
+      security:
+        - bearerAuth: []   
       parameters:
         - in: query
           name: mailbox
@@ -69,9 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EmailResponse'
+                $ref: '#/components/schemas/EmailResponse'
         404:
           description: Not Found
         default:
@@ -125,14 +125,11 @@ components:
 
     EmailResponse:
       properties:
-        name:
-          type: string
         mail:
           type: array
           items:
             $ref: '#/components/schemas/Mail'
       required:
-        - name
         - mail
   
     Mail:
@@ -160,5 +157,9 @@ components:
           type: string
         sent:
           type: string
-        id:
-          type: string
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes

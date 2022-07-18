@@ -15,14 +15,13 @@ INSERT INTO mailbox (owned_by, boxname) VALUES ('molly@slugmail.com', 'Sent');
 INSERT INTO mailbox (owned_by, boxname) VALUES ('anna@slugmail.com', 'Sent');
 
 DELETE FROM mail;
-INSERT INTO mail (id, from_name, from_email, to_name, to_email, content, subject_line, sent_time, received_time) 
-SELECT mailbox.id, 'Keanu Reeves', 'neo@slugmail.com', 'Molly Member', 'molly@slugmail.com', 'I know kung fu.', 'The Matrix', '2020-11-14T17:09:17Z', '2020-11-14T17:09:17Z'
+INSERT INTO mail (id, mail) 
+SELECT mailbox.id, '{"to":{"name":"Molly Member","email":"molly@slugmail.com"},"from":{"name":"Keanu Reeves","email":"neo@ucsc.edu"},"received":"2020-11-17T23:17:19Z","sent":"2020-11-14T17:09:17Z","content":"I know kung fu.","subject":"The Matrix"}'
 FROM mailbox
 WHERE mailbox.boxname = 'Inbox'
 AND mailbox.owned_by = 'molly@slugmail.com';
-
-INSERT INTO mail (id, from_name, from_email, to_name, to_email, content, subject_line, sent_time, received_time) 
-SELECT mailbox.id, 'Keanu Reeves', 'ted@slugmail.com', 'Anna Admin', 'anna@slugmail.com', 'Be excellent to each other, and party on dudes.', `Bill & Ted's Excellent Adventure`, '2021-11-14T17:09:17Z', '2021-11-14T17:09:17Z'
+INSERT INTO mail (id, mail) 
+SELECT mailbox.id, '{"to":{"name":"Molly Member","email":"molly@slugmail.com"},"from":{"name":"Keanu Reeves","email":"ted@ucsc.edu"},"received":"2021-11-17T23:17:19Z","sent":"2021-11-14T17:09:17Z","content":"Be excellent to each other.","subject":"Bill and Ted"}'
 FROM mailbox
 WHERE mailbox.boxname = 'Inbox'
-AND mailbox.owned_by = 'anna@slugmail.com';
+AND mailbox.owned_by = 'molly@slugmail.com';

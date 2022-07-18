@@ -30,8 +30,8 @@ app.use(
 
 app.get('/v0/dummy', dummy.get);
 // Your routes go here
-app.get('/v0/mail', mail.getAll);
 app.post('/v0/login', auth.login);
+app.get('/v0/mail', auth.check, mail.getAll);
 
 app.use((err, req, res, next) => {
   res.status(err.status).json({

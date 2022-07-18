@@ -23,14 +23,7 @@ CREATE TABLE mailbox (
 DROP TABLE IF EXISTS mail;
 CREATE TABLE mail (
 	id UUID NOT NULL,
-	from_name VARCHAR(255),
-	from_email VARCHAR(100),
-	to_name VARCHAR(255),
-	to_email VARCHAR(100),
-	content VARCHAR,
-	subject_line VARCHAR,
-	sent_time VARCHAR(50),
-	received_time VARCHAR(50),
+	mail jsonb,
 	FOREIGN KEY(id)
 		REFERENCES mailbox(id)
 );
