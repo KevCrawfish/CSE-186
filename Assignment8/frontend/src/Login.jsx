@@ -36,7 +36,7 @@ function Login() {
       })
       .then((json) => {
         localStorage.setItem('user', JSON.stringify(json));
-        history('/');
+        history('/home');
       })
       .catch((err) => {
         alert('Error logging in, please try again');

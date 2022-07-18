@@ -54,6 +54,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /mail:
+    get:
+      parameters:
+        - in: query
+          name: mailbox
+          description: mailbox name
+          schema: 
+            type: string
+      description: Returns e-mails
+      responses:
+        200:
+          description: Emails Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailResponse'
+        404:
+          description: Not Found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Error:
@@ -95,3 +122,43 @@ components:
       required:
         - email
         - password
+
+    EmailResponse:
+      properties:
+        name:
+          type: string
+        mail:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mail'
+      required:
+        - name
+        - mail
+  
+    Mail:
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+        from:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+        subject:
+          type: string
+        content:
+          type: string
+        received:
+          type: string
+        sent:
+          type: string
+        id:
+          type: string
