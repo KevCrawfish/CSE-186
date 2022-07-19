@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 /**
  * app bar from mui
@@ -109,6 +113,7 @@ const fetchMails = (setMails, setError, mailbox) => {
 function Home() {
   const [mail, setMail] = React.useState([]);
   const [error, setError] = React.useState('Logged Out');
+  if (error) {};
 
   React.useEffect(() => {
     fetchMails(setMail, setError, 'inbox');
@@ -118,22 +123,24 @@ function Home() {
     <div>
       <ButtonAppBar></ButtonAppBar>
       <p/>
-      <table id='mails'>
-        <tbody>
-          {mail.map((mail) => (
-            <tr key={mail.mail.id} id={'id'+mail.mail.id}>
+      <List id = 'mails' dense={false}>
+        {mail.map((mail) => (
+          <ListItem key={mail.mail.id} id={'id' + mail.mail.id}>
+            <ListItemIcon>
               <Avatar {...stringAvatar(`${mail.mail.from.name}`)} />
-              <td>{mail.mail.from.name}</td>
-              <td>{mail.mail.subject}</td>
-              <td>{mail.mail.content}</td>
-              <td>{mail.mail.received}</td>
-            </tr>
-          ))}
-          <tr key={'error'}>
-            <td colSpan={4}>{error}</td>
-          </tr>
-        </tbody>
-      </table>
+            </ListItemIcon>
+            <ListItemText
+              primary = {
+                <div>
+                  <div>{mail.mail.from.name}</div>
+                  <div>{mail.mail.subject}</div>
+                </div>
+              }
+              secondary = {mail.mail.content}
+            />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 }
