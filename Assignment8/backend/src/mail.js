@@ -25,6 +25,7 @@ selectMails = async (req) => {
   const {rows} = await pool.query(query);
   const mails = [];
   for (const row of rows) {
+    row.mail.id = row.uqid;
     mails.push({mail: row.mail});
   }
 
