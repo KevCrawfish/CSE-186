@@ -60,7 +60,7 @@ test('Home Renders', async () => {
  */
 test('Fetch from home', async () => {
   window.localStorage.setItem('user', JSON.stringify({'name': 'Molly Member',
-  'accessToken': 'not a real accessToken'}));
+    'accessToken': 'not a real accessToken'}));
   render(<Home />);
   await waitFor(() =>{
     screen.getByLabelText('Jimothy');
@@ -71,7 +71,7 @@ test('Fetch from home', async () => {
  */
 test('Fetch bad response', async () => {
   window.localStorage.setItem('user', JSON.stringify({'name': 'Molly Member',
-  'accessToken': 'not a real accessToken'}));
+    'accessToken': 'not a real accessToken'}));
   server.use(
     rest.get(URL, (req, res, ctx) => {
       return res(ctx.status(500));
@@ -85,7 +85,7 @@ test('Fetch bad response', async () => {
 
 /**
  */
- test('Home Renders with null value', async () => {
+test('Home Renders with null value', async () => {
   window.localStorage.setItem('user', 'null');
   render(<Home />);
 });
