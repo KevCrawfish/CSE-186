@@ -52,6 +52,7 @@ function Login() {
         name="email"
         placeholder="Email address"
         onChange={handleInputChange}
+        aria-label={user.email}
         required
       />
       <input

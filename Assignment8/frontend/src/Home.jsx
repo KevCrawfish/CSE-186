@@ -75,7 +75,7 @@ function stringAvatar(name) {
     sx: {
       bgcolor: stringToColor(name),
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: `${name.split('')[0][0]}`,
   };
 }
 
@@ -118,14 +118,14 @@ function Home() {
   React.useEffect(() => {
     fetchMails(setMail, setError, 'inbox');
   }, []);
-
   return (
     <div>
       <ButtonAppBar></ButtonAppBar>
       <p/>
       <List id = 'mails' dense={false}>
         {mail.map((mail) => (
-          <ListItem key={mail.mail.id} id={'id' + mail.mail.id}>
+          <ListItem key={mail.mail.id} id={'id' + mail.mail.id}
+            aria-label={mail.mail.from.name}>
             <ListItemIcon>
               <Avatar {...stringAvatar(`${mail.mail.from.name}`)} />
             </ListItemIcon>
