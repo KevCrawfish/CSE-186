@@ -81,6 +81,9 @@ function stringAvatar(name) {
 
 const fetchMails = (setMails, setError, mailbox) => {
   const item = localStorage.getItem('user');
+  if (!item) {
+    return;
+  }
   const user = JSON.parse(item);
   const bearerToken = user ? user.accessToken : '';
   fetch('http://localhost:3010/v0/mail?mailbox=' + mailbox, {
@@ -101,7 +104,6 @@ const fetchMails = (setMails, setError, mailbox) => {
       setMails(json);
     })
     .catch((error) => {
-      console.log(error);
       setMails([]);
       setError(`${error.status} - ${error.statusText}`);
     });
@@ -141,6 +143,9 @@ function Home() {
           </ListItem>
         ))}
       </List>
+      <div key={'error'}>
+        <div colSpan={4}>{error}</div>
+      </div>
     </div>
   );
 }
