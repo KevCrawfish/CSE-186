@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 /**
  * app bar from mui
- * @return {appbar}
+ * @return {Box}
  */
 function ButtonAppBar() {
   return (

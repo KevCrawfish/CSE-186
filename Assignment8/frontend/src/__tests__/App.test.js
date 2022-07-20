@@ -5,10 +5,6 @@ import {rest} from 'msw';
 
 import App from '../App';
 import Home from '../Home';
-const bearerToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC' +
-'J9.eyJlbWFpbCI6Im1vbGx5QHNsdWdtYWlsLmNvbSIsImlhdCI6MT' +
-'Y1ODI2MzAxMiwiZXhwIjoxNjU4MjY0ODEyfQ.-LwaJl7rOn7M-cd1b' +
-'TvLGZf9L2aIwee6aIqfqLuhs-g';
 
 const URL = 'http://localhost:3010/v0/mail';
 const server = setupServer(
@@ -16,7 +12,7 @@ const server = setupServer(
     return res(
       ctx.status(200),
       ctx.set({
-        'Authorization': `Bearer ${bearerToken}`,
+        'Authorization': `Bearer`,
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
       ctx.json([{
