@@ -6,6 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ButtonAppBar from './Appbar';
 import stringAvatar from './Stringavatar';
+import './Home.css';
 
 const fetchMails = (setMails, setError, mailbox) => {
   const item = localStorage.getItem('user');
@@ -54,7 +55,9 @@ function Home() {
       <ButtonAppBar
         boxChange = {setMailbox}
       />
-      <p/>
+      <h3
+        style={{marginBottom: 0, paddingLeft: 10}}
+      >{`${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`}</h3>
       <List id = 'mails' dense={true}>
         {mail.map((mail) => (
           <ListItem key={mail.mail.id} id={'id' + mail.mail.id}
