@@ -43,16 +43,19 @@ const fetchMails = (setMails, setError, mailbox) => {
 function Home() {
   const [mail, setMail] = React.useState([]);
   const [error, setError] = React.useState('Logged Out');
+  const [mailbox, setMailbox] = React.useState('inbox');
   if (error) {};
 
   React.useEffect(() => {
-    fetchMails(setMail, setError, 'inbox');
-  }, []);
+    fetchMails(setMail, setError, mailbox);
+  }, [mailbox]);
   return (
     <div>
-      <ButtonAppBar/>
+      <ButtonAppBar
+        boxChange = {setMailbox}
+      />
       <p/>
-      <List id = 'mails' dense={false}>
+      <List id = 'mails' dense={true}>
         {mail.map((mail) => (
           <ListItem key={mail.mail.id} id={'id' + mail.mail.id}
             aria-label={mail.mail.from.name}>
@@ -66,7 +69,9 @@ function Home() {
                   <div>{mail.mail.subject}</div>
                 </div>
               }
-              secondary = {mail.mail.content}
+              secondary = {mail.mail.content.length >= 40 ?
+                mail.mail.content.substring(0, 40) + '...' :
+                mail.mail.content}
             />
           </ListItem>
         ))}
