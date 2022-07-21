@@ -54,16 +54,12 @@ afterEach(async () => {
   await browser.close();
 });
 
-// Clicks the 'Get Dummy' button and checks the server response is displayed.
+// User Signs In
 test('input text into email field', async () => {
   await page.goto('http://localhost:3020');
   await page.type('input[name=email]', 'molly@slugmail.com');
   await page.type('input[name=password]', 'mollymember');
   await page.click('input[type=submit]');
   await page.waitForNavigation();
-  let label = await page.$('#root > div > div >' +
-  'div.MuiBox-root.css-i9gxme > header > div > div');
-  cont = await (await label.getProperty('textContent')).jsonValue();
-  expect(cont).toBe('CSE 186');
 });
 

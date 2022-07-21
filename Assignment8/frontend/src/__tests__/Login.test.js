@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import {rest} from 'msw';
 import {MemoryRouter, Routes, Route} from 'react-router-dom';
 
-// import App from '../App';
 import Login from '../Login';
 
 beforeAll(() => server.listen());
