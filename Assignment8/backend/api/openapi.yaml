@@ -77,13 +77,6 @@ components:
         - code
         - message
 
-    DummyResponse:
-      properties:
-        message:
-          type: string
-      required:
-        - message
-
     User:
       type: object
       properties:

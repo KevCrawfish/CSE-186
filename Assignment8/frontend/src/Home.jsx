@@ -1,83 +1,11 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
-/**
- * app bar from mui
- * @return {Box}
- */
-function ButtonAppBar() {
-  return (
-    <Box sx={{flexGrow: 1}}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{mr: 2}}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-            CSE 186
-          </Typography>
-          <Button color="inherit">Log-Out</Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  );
-}
-
-/**
- *
- * @param {string} string
- * @return {color}
- */
-function stringToColor(string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-/**
- *
- * @param {string} name
- * @return {child}
- */
-function stringAvatar(name) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name),
-    },
-    children: `${name.split('')[0][0]}`,
-  };
-}
+import ButtonAppBar from './Appbar';
+import stringAvatar from './Stringavatar';
 
 const fetchMails = (setMails, setError, mailbox) => {
   const item = localStorage.getItem('user');
@@ -122,7 +50,7 @@ function Home() {
   }, []);
   return (
     <div>
-      <ButtonAppBar></ButtonAppBar>
+      <ButtonAppBar/>
       <p/>
       <List id = 'mails' dense={false}>
         {mail.map((mail) => (
