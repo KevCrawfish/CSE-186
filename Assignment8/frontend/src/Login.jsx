@@ -3,8 +3,11 @@ import {useNavigate} from 'react-router-dom';
 import './Login.css';
 import slug from './slug.png';
 
+// Class sources used:
+// 14. Authenticated Book Example
+
 /**
- * Resources used: 14. Authenticated Book Example
+ *
  * @return {div} login div
  */
 function Login() {

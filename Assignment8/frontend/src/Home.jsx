@@ -15,6 +15,17 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import './Home.css';
 import {Stack} from '@mui/material';
 
+// Class sources used
+// 14. Authenticated books example
+// 13. Database book example
+// 12. Bookexample
+
+// mui sources:
+// https://mui.com/material-ui/material-icons/
+// https://mui.com/material-ui/react-list/#BasicList.js
+// https://mui.com/material-ui/react-stack/#BasicStack.js
+// https://mui.com/material-ui/react-avatar/#BackgroundLetterAvatars.js
+
 const fetchMails = (setMails, setError, mailbox) => {
   const item = localStorage.getItem('user');
   if (!item) {

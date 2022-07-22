@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const secrets = require('../data/secrets.json');
 const {Pool} = require('pg');
 
+// Class sources used
+// 14. Authenticated books example
+
 const pool = new Pool({
   host: 'localhost',
   port: 5432,

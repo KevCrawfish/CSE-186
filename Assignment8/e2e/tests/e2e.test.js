@@ -12,6 +12,9 @@ let frontend;
 let browser;
 let page;
 
+// Class sources used
+// Dummy.test.js
+
 beforeAll(() => {
   backend = http.createServer(app);
   backend.listen(3011, () => {
