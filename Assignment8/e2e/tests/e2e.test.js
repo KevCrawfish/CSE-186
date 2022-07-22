@@ -80,12 +80,6 @@ test('input text into email field no login', async () => {
   expect(prop).toBe('Login');
 });
 
-// To Do:
-// commment mui and others for safety
-// last check
-// make video
-// submit
-
 test('login then click logout', async () => {
   await page.goto('http://localhost:3020');
   await page.type('input[name=email]', 'molly@slugmail.com');
