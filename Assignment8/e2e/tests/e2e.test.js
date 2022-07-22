@@ -60,6 +60,8 @@ test('input text into email field and login', async () => {
   await page.type('input[name=password]', 'mollymember');
   await page.click('input[type=submit]');
   await page.waitForNavigation();
+  const prop = await page.$eval('aria/currentbox', el => el.textContent);
+  expect(prop).toBe('Inbox');
 });
 
 test('input text into email field no login', async () => {
@@ -76,9 +78,73 @@ test('input text into email field no login', async () => {
 });
 
 // To Do:
-// fill alice mailbox with stuff
-// write end to end tests
 // commment mui and others for safety
+// last check
 // make video
 // submit
+
+test('login then click logout', async () => {
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'molly@slugmail.com');
+  await page.type('input[name=password]', 'mollymember');
+  await page.click('input[type=submit]');
+  await page.waitForNavigation();
+  await page.click('aria/Account settings');
+  await page.click("aria/menulogout");
+  const prop = await page.$eval('#welcome', el => el.textContent);
+  expect(prop).toBe('Login');
+});
+
+test('login then click menu go to inbox', async () => {
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'molly@slugmail.com');
+  await page.type('input[name=password]', 'mollymember');
+  await page.click('input[type=submit]');
+  await page.waitForNavigation();
+  await page.click('aria/menu');
+  await page.waitForSelector(`aria/inboxbutton`);
+  await page.click('aria/inboxbutton');
+  const prop = await page.$eval('aria/currentbox', el => el.textContent);
+  expect(prop).toBe('Inbox');
+});
+
+test('login then click menu go to trash', async () => {
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'molly@slugmail.com');
+  await page.type('input[name=password]', 'mollymember');
+  await page.click('input[type=submit]');
+  await page.waitForNavigation();
+  await page.click('aria/menu');
+  await page.waitForSelector(`aria/trashbutton`);
+  await page.click('aria/trashbutton');
+  const prop = await page.$eval('aria/currentbox', el => el.textContent);
+  expect(prop).toBe('Trash');
+});
+
+test('login then click mail', async () => {
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'molly@slugmail.com');
+  await page.type('input[name=password]', 'mollymember');
+  await page.click('input[type=submit]');
+  await page.waitForNavigation();
+  await page.waitForSelector(`aria/Fry`);
+  await page.click('aria/Fry');
+  const prop = await page.$eval('aria/mailcontent', el => el.textContent);
+  expect(prop).toBe('This is a message from the future');
+});
+
+test('login then click mail then click back', async () => {
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'molly@slugmail.com');
+  await page.type('input[name=password]', 'mollymember');
+  await page.click('input[type=submit]');
+  await page.waitForNavigation();
+  await page.waitForSelector(`aria/Fry`);
+  await page.click('aria/Fry');
+  let prop = await page.$eval('aria/mailcontent', el => el.textContent);
+  expect(prop).toBe('This is a message from the future');
+  await page.click('aria/back');
+  prop = await page.$eval('aria/currentbox', el => el.textContent);
+  expect(prop).toBe('Inbox');
+});
 

@@ -161,6 +161,7 @@ function Home() {
                   handleDate(mail.mail.received)}
               </div>
               <div
+                aria-label='mailcontent'
                 style={{position: 'absolute', top: 200,
                   left: 20, fontSize: 'large'}}
               >
@@ -176,6 +177,7 @@ function Home() {
         boxChange = {setMailbox}
       />
       <h3
+        aria-label='currentbox'
         style={{marginBottom: 0, paddingLeft: 10,
           fontFamily: 'sans-serif'}}
       >{`${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`}</h3>
