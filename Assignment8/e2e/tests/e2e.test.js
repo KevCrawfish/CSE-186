@@ -54,12 +54,24 @@ afterEach(async () => {
   await browser.close();
 });
 
-// User Signs In
-test('input text into email field', async () => {
+test('input text into email field and login', async () => {
   await page.goto('http://localhost:3020');
   await page.type('input[name=email]', 'molly@slugmail.com');
   await page.type('input[name=password]', 'mollymember');
   await page.click('input[type=submit]');
   await page.waitForNavigation();
+});
+
+test('input text into email field no login', async () => {
+  page.on('dialog', async dialog => {
+    console.log(dialog.message());
+    await dialog.accept();
+  })
+  await page.goto('http://localhost:3020');
+  await page.type('input[name=email]', 'bademail@email.com');
+  await page.type('input[name=password]', 'bademail');
+  await page.click('input[type=submit]');
+  const prop = await page.$eval('#welcome', el => el.textContent);
+  expect(prop).toBe('Login');
 });
 

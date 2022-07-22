@@ -8,7 +8,12 @@ import ButtonAppBar from './Appbar';
 import stringAvatar from './Stringavatar';
 import Box from '@mui/material/Box';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MoveToInboxIcon from '@mui/icons-material/MoveToInbox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ReplyIcon from '@mui/icons-material/Reply';
 import './Home.css';
+import {Stack} from '@mui/material';
 
 const fetchMails = (setMails, setError, mailbox) => {
   const item = localStorage.getItem('user');
@@ -48,6 +53,7 @@ function Home() {
   const [error, setError] = React.useState('Logged Out');
   const [mailbox, setMailbox] = React.useState('inbox');
   const [box, setBox] = React.useState('none');
+  const [indMail, setIndMail] = React.useState([]);
   if (error) {};
 
   const handleDate= (rec) => {
@@ -65,8 +71,7 @@ function Home() {
     today.getDate() - 1 === date.getDate()) {
       return 'Yesterday';
     } else if (today.getFullYear() === date.getFullYear()) {
-      return months[date.getMonth()] + (date.getDate() < 10 ? ' 0' : ' ') +
-          date.getDate();
+      return months[date.getMonth()] + ' ' + date.getDate();
     } else {
       return date.getFullYear();
     }
@@ -88,12 +93,84 @@ function Home() {
           'backgroundColor': 'white',
         }}
       >
-        <ArrowBackIosIcon
-          style={{padding: 10}}
-          onClick={() => {
-            setBox('none');
-          }}
-        />
+        <div>
+          <ListItemButton
+            style={{top: 5, position: 'absolute',
+              padding: 10}}
+            onClick={() => {
+              setBox('none');
+            }}
+            aria-label='back'
+          >
+            <ArrowBackIosIcon/>
+          </ListItemButton>
+          <Stack direction={'row'}
+            style={{position: 'absolute', top: 0, right: 0}}
+          >
+            <ListItemButton>
+              <MailOutlineIcon fontSize='large'/>
+            </ListItemButton>
+            <ListItemButton>
+              <MoveToInboxIcon fontSize='large'/>
+            </ListItemButton>
+            <ListItemButton>
+              <DeleteIcon fontSize='large'/>
+            </ListItemButton>
+          </Stack>
+        </div>
+        <div
+          style={{position: 'absolute', top: 110, left: 20,
+            background: 'lightgrey', fontFamily: 'sans-serif'}}
+        >
+          {`${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}`}
+        </div>
+        <div
+          style={{position: 'absolute', top: 135,
+            right: 20}}
+        >
+          <ListItemButton>
+            <ReplyIcon/>
+          </ListItemButton>
+        </div>
+        <div>
+          {indMail.map((mail) => (
+            <div key={mail.mail.id}>
+              <div
+                style={{position: 'absolute', top: 70,
+                  fontWeight: 'bold', left: 20, fontSize: 'large'}}
+              >
+                {mail.mail.subject}
+              </div>
+              <div
+                style={{position: 'absolute', top: 140,
+                  left: 20}}
+              >
+                <Avatar {...stringAvatar(`${mail.mail.from.name}`)} />
+              </div>
+              <div
+                style={{position: 'absolute', top: 160,
+                  left: 70, fontSize: 'large'}}
+              >
+                {mail.mail.from.email}
+              </div>
+              <div
+                style={{position: 'absolute', top: 140,
+                  left: 70, fontSize: 'large'}}
+              >
+                {mail.mail.from.name + ' ' +
+                  handleDate(mail.mail.received)}
+              </div>
+              <div
+                style={{position: 'absolute', top: 200,
+                  left: 20, fontSize: 'large'}}
+              >
+                {mail.mail.content}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div>
+        </div>
       </Box>
       <ButtonAppBar
         boxChange = {setMailbox}
@@ -108,8 +185,9 @@ function Home() {
             aria-label={mail.mail.from.name}
             onClick={() => {
               setBox('flex');
+              setIndMail([mail]);
             }}
-            >
+          >
             <ListItemIcon>
               <Avatar {...stringAvatar(`${mail.mail.from.name}`)} />
             </ListItemIcon>
