@@ -75,3 +75,10 @@ test('input text into email field no login', async () => {
   expect(prop).toBe('Login');
 });
 
+// To Do:
+// fill alice mailbox with stuff
+// write end to end tests
+// commment mui and others for safety
+// make video
+// submit
+
